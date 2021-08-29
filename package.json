@@ -1,0 +1,70 @@
+{
+  "name": "mongosteel",
+  "version": "1.0.0",
+  "description": "A solid ODM for MongoDB",
+  "main": "dist/index",
+  "typings": "dist/index",
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/explicit-function-return-type": "warn",
+      "@typescript-eslint/explicit-module-boundary-types": "warn",
+      "@typescript-eslint/consistent-type-assertions": "warn",
+      "@typescript-eslint/ban-tslint-comment": "error"
+    },
+    "ignorePatterns": [
+      "dist/",
+      "build/"
+    ]
+  },
+  "author": "Shady Goat <shady@shadygoat.eu> (https://shadygoat.eu/)",
+  "license": "MIT",
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "dist/lib"
+  ],
+  "scripts": {
+    "lint": "eslint 'lib/**/*.ts'",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "start": "node .",
+    "build:docs": "rm -rf ./docs/dist && typedoc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ShadiestGoat/mongosteel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ShadiestGoat/mongosteel/issues"
+  },
+  "homepage": "https://github.com/ShadiestGoat/mongosteel",
+  "keywords": [
+    "mongodb",
+    "orm",
+    "odm",
+    "schema",
+    "database",
+    "db",
+    "nosql",
+    "data",
+    "mongosteel"
+  ],
+  "dependencies": {
+    "mongodb": "~4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.3.3",
+    "@typescript-eslint/eslint-plugin": "^4.28.3",
+    "@typescript-eslint/parser": "^4.28.3",
+    "eslint": "^7.31.0",
+    "typedoc": "^0.21.8",
+    "typescript": "^4.2.2"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
