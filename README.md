@@ -2,8 +2,6 @@
 
 MongoSteel is a *solid* [MongoDB](https://www.mongodb.org/) object modeling tool, designed to work in a typescript asynchronous environment. MongoSteel does not support callbacks.
 
-[![NPM version](https://badge.fury.io/js/mongosteel.svg)](http://badge.fury.io/js/mongosteel)
-
 [![npm](https://nodei.co/npm/mongosteel.png)](https://www.npmjs.com/package/mongosteel)
 
 ## Why was this made?
@@ -13,7 +11,7 @@ So, I decided to throw my own hat into the ring, and made this. As of now, it do
 
 ## Documentation
 
-For official Documentation go to [here](https://mongosteel.shadygoat.eu/docs)
+For official Documentation go to [here](https://mongosteel.shadygoat.eu/)
 
 ## Support
 
