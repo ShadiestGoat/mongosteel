@@ -1,7 +1,4 @@
-dist
 package-lock.json
 .env
-msgs.json
-data
 node_modules
 build

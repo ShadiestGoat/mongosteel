@@ -21,9 +21,9 @@ You can get support on [github's discussions](https://github.com/ShadiestGoat/mo
 
 ## Limitations
 
- 1. A schema cannot have a property named 'type' and 'required' as those are currently used to identify schema options
- 2. No plugins (though the collection property is exposed, so you can do what you want with that one ;))
- 3. Not all methods are implemented (due to some being superior, case and point: `findOneAndDelete` > `deleteOne`), but again the collection property is exposed, you can still call those methods from the mongodb driver
+1. A schema cannot have a property named 'type' and 'required' as those are currently used to identify schema options
+2. No plugins (though the collection property is exposed, so you can do what you want with that one ;))
+3. Not all methods are implemented (due to some being superior, case and point: `findOneAndDelete` > `deleteOne`), but again the collection property is exposed, you can still call those methods from the mongodb driver
 
 ## Contributions
 
@@ -32,3 +32,8 @@ Pull requests are always welcome :)
 If you want to add documentation, 
 
 [Current contributors](https://github.com/ShadiestGoat/mongosteel/graphs/contributors)
+
+## Acknowledgments
+
+Some of the code & explanations present in this repository has been moddeled after [mongoose](https://github.com/Automattic/mongoose)
+
