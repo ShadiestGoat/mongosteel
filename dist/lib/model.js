@@ -11,6 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.model = exports.waitForConnection = void 0;
 const connection_1 = require("./connection");
+const schema_1 = require("./schema");
+/**
+ * A function to wait for you to connect :D
+ */
 function waitForConnection() {
     let tries = 0;
     function inc() {
@@ -18,11 +22,11 @@ function waitForConnection() {
             clearInterval(this);
             return;
         }
-        tries++;
         if (tries > 11)
             throw "There is no connection!";
+        tries++;
     }
-    setInterval(inc);
+    setInterval(inc, 3000);
 }
 exports.waitForConnection = waitForConnection;
 function getCollection(name) {
@@ -32,23 +36,29 @@ function getCollection(name) {
     return connection_1.mongoSteelConnection.db.collection(name);
 }
 class trueModel {
-    constructor(collection, schema, doc) {
+    constructor(collection, schema, doc, methods) {
         waitForConnection();
         if (!connection_1.mongoSteelConnection.on)
             throw "Please don't manually set this variable!";
         const validate = schema.validate(doc);
         if (!validate.valid)
-            throw { name: "Error", message: "Invalid document!", err: validate };
+            throw new schema_1.MongoSteelValidityError(validate);
         this.doc = validate.res;
         this.schema = schema;
         this.colName = collection;
         this.saved = false;
         this.oldId = "";
+        this.collection = getCollection(collection);
+        this.methods = methods;
     }
+    /**
+     * Saves the current document into the database
+     * @returns
+     */
     save() {
         return __awaiter(this, void 0, void 0, function* () {
             const col = getCollection(this.colName);
-            if (this.saved && (this.oldId == this.doc._id)) {
+            if (!connection_1.mongoSteelConnection.opts.noIdDetection && this.saved && (this.oldId == this.doc._id)) {
                 console.warn(`The _id ${this.doc._id} has already been saved once, overriding it with a new id...\nTo avoid this, use mongoSteel option { noIdDetection:true }`);
                 delete this.doc._id;
             }
@@ -83,6 +93,10 @@ class trueModel {
     }
     static findOneAndReplace(filter, replacement) {
         return __awaiter(this, void 0, void 0, function* () {
+            const valid = this.schema.validate(replacement);
+            if (!valid.valid)
+                throw new schema_1.MongoSteelValidityError(valid);
+            replacement = valid.res;
             const col = getCollection(this.colName);
             const res = yield col.findOneAndReplace(filter, replacement);
             if (!res.ok)
@@ -92,17 +106,15 @@ class trueModel {
     }
     static findOneAndUpdate(filter, update) {
         return __awaiter(this, void 0, void 0, function* () {
+            const valid = this.schema.validate(update, { ignoreDefault: true, ignoreRequired: true });
+            if (!valid.valid)
+                throw new schema_1.MongoSteelValidityError(valid);
+            // no need to update the update since there should be no mutations!
             const col = getCollection(this.colName);
             const res = yield col.findOneAndUpdate(filter, update);
             if (!res.ok)
                 throw new Error('findOneAndUpdate returned not OK');
             return res.value;
-        });
-    }
-    static deleteOne(filter) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const col = getCollection(this.colName);
-            yield col.deleteOne(filter);
         });
     }
     static deleteMany(filter) {
@@ -112,13 +124,21 @@ class trueModel {
         });
     }
 }
-function model(collection, schema) {
+/**
+ * A function to return a Model CLASS. Not instance.
+ * @param collection the name of the collection
+ * @param schema the shema for that collection
+ * @returns the model class.
+ */
+function model(collection, schema, methods) {
     class MModel extends trueModel {
         constructor(doc = {}) {
-            super(collection, schema, doc);
+            super(collection, schema, doc, methods);
         }
     }
     MModel.colName = collection;
+    MModel.schema = schema;
+    MModel.collection = getCollection(collection);
     return MModel;
 }
 exports.model = model;

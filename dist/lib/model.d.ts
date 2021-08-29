@@ -1,34 +1,77 @@
-import { OptionalId, UpdateFilter } from "mongodb";
+import { Collection, OptionalId, UpdateFilter } from "mongodb";
 import { Schema } from "./schema";
+/**
+ * A function to wait for you to connect :D
+ */
 export declare function waitForConnection(): void;
-declare class trueModel<Lean, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
+declare class trueModel<Lean, MMethods extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
+    static schema: Schema<unknown>;
     schema: SH;
     doc: OptionalId<Lean>;
     static colName: string;
     colName: string;
     saved: boolean;
+    methods: MMethods;
+    /**
+     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
+     */
+    collection: Collection<Lean>;
+    /**
+     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
+     */
+    static collection: Collection;
     private oldId;
-    constructor(collection: string, schema: SH, doc: Partial<OptionalId<Lean>>);
+    constructor(collection: string, schema: SH, doc: Partial<OptionalId<Lean>>, methods: MMethods);
+    /**
+     * Saves the current document into the database
+     * @returns
+     */
     save(): Promise<OptionalId<Lean>>;
     static find(filter: Partial<unknown>): Promise<unknown[]>;
     static findOne(filter: Partial<unknown>): Promise<unknown | undefined>;
     static findOneAndDelete(filter: Partial<unknown>): Promise<unknown>;
     static findOneAndReplace(filter: Partial<unknown>, replacement: Record<string, never>): Promise<unknown>;
     static findOneAndUpdate(filter: Partial<unknown>, update: UpdateFilter<unknown>): Promise<unknown>;
-    static deleteOne(filter: Partial<unknown>): Promise<void>;
     static deleteMany(filter: Partial<unknown>): Promise<void>;
 }
-export interface Model<MLean> extends trueModel<MLean> {
+/**
+ * The Model class. This should not be called directly, check model() for getting this class.  This should only be used for types
+ */
+export interface Model<MLean, MMethods extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>> extends trueModel<MLean, MMethods> {
     new (doc: Partial<OptionalId<MLean>>): trueModel<MLean>;
     colName: string;
+    collection: Collection<MLean>;
+    /**
+     * Find multiple documents in your collection using properties of your document
+     */
     find(filter: Partial<MLean>): Promise<MLean[]>;
+    /**
+     * Find the first document that has all the properties in the filter argument
+     */
     findOne(filter: Partial<MLean>): Promise<MLean | undefined>;
+    /**
+     * Find the first document that has all the properties in the filter argument and delete it.
+     */
     findOneAndDelete(filter: Partial<MLean>): Promise<MLean>;
+    /**
+     * Find the first document that matches all the propeties in the filter argument, and replace it the a document in the replacement
+     */
     findOneAndReplace(filter: Partial<MLean>, replacement: MLean): Promise<MLean>;
+    /**
+     * Find the first document that matches all the properties in the filter argument, and do what is essentially Object.assign() on it with the update argument
+     */
     findOneAndUpdate(filter: Partial<MLean>, update: UpdateFilter<MLean>): Promise<MLean>;
-    deleteOne(filter: Partial<MLean>): Promise<void>;
+    /**
+     * Delete all matching documents to the filter argument
+     */
     deleteMany(filter: Partial<MLean>): Promise<void>;
 }
-export declare function model<Lean = unknown>(collection: string, schema: Schema<OptionalId<Lean>>): Model<Lean>;
+/**
+ * A function to return a Model CLASS. Not instance.
+ * @param collection the name of the collection
+ * @param schema the shema for that collection
+ * @returns the model class.
+ */
+export declare function model<Lean, Methods extends Record<string, (this: Model<Lean, Methods>, ...args: unknown[]) => unknown> = Record<string, never>>(collection: string, schema: Schema<OptionalId<Lean>>, methods: Methods): Model<Lean, Methods>;
 export {};
 //# sourceMappingURL=model.d.ts.map

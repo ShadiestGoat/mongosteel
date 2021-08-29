@@ -11,6 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongoSteel = exports.mongoSteelConnection = exports.toUrl = void 0;
 const mongodb_1 = require("mongodb");
+/**
+ * Create a connection url
+ */
 function toUrl(opts) {
     [
         'dbName',
@@ -26,12 +29,18 @@ function toUrl(opts) {
     return `mongodb://${encodeURI(opts.user)}:${encodeURI(opts.password)}@${encodeURI(opts.location)}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v, i) => { var _a; return `${i == 0 ? '' : "&"}${encodeURI(`${v}=${((_a = opts.dbOpts) !== null && _a !== void 0 ? _a : {})[v]}`)}`; })}`;
 }
 exports.toUrl = toUrl;
+/**
+ * A 'global-ish' connection state that mongoSteel uses. Do not manuall change this, check MongoSteel.connect() and MongoSteel.disconnect()
+ */
 exports.mongoSteelConnection = {
     on: false,
     models: {},
     opts: {}
 };
 class MongoSteel {
+    /**
+     * Connect to a database. This is a static method, so you can do MongoSteel.connect(), without having to create an instance of the class
+     */
     static connect(connection, opts, mongoSteelSettings) {
         return __awaiter(this, void 0, void 0, function* () {
             if (exports.mongoSteelConnection.on) {
@@ -57,6 +66,9 @@ class MongoSteel {
             return db;
         });
     }
+    /**
+     * Disconnect from a database. This is a static method, so you can do MongoSteel.disconnect(), without having to create an instance of the class
+     */
     static disconnect() {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {

@@ -1,12 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Schema = void 0;
+exports.Schema = exports.MongoSteelValidityError = void 0;
+/**
+ * if a schema validation fails on a Model class level
+ */
+class MongoSteelValidityError extends Error {
+    constructor(validRes) {
+        super(`This document is not valid!`);
+        Object.setPrototypeOf(this, MongoSteelValidityError.prototype);
+        this.obj = validRes;
+    }
+}
+exports.MongoSteelValidityError = MongoSteelValidityError;
 class Schema {
     constructor(schema) {
         function parser(val) {
             if (typeof val == "string") {
                 if (!val)
-                    val = "string";
+                    val = "string"; //use string as default!
                 return {
                     type: val,
                     required: true
@@ -22,11 +33,13 @@ class Schema {
                 if (typeof val != 'object')
                     throw new Error('Unrecognised schema type!');
                 if (Object.keys(val).includes('type') && Object.keys(val).includes('required')) {
+                    // schema type options
                     if (typeof val.type == "object")
                         val.type = parser(val.type);
                     return val;
                 }
                 else {
+                    // nested schema
                     return inc(val);
                 }
             }
@@ -44,7 +57,12 @@ class Schema {
         }
         this.schema = inc(schema);
     }
-    validate(doc) {
+    /**
+     * validate an object to make sure the document provided is a valid one. This also adds the default values
+     *
+     * Note: this does not throw MongoSteelValidityError!
+     */
+    validate(doc, opts = {}) {
         if (typeof doc != "object" || Array.isArray(doc))
             return {
                 valid: false,
@@ -54,14 +72,17 @@ class Schema {
             var _a;
             for (const v in s1) {
                 if (!Object.keys(s2).includes(v)) {
-                    if (s1[v].required)
+                    if (s1[v].required && !opts.ignoreRequired)
                         return {
                             valid: false,
                             reason: 'required',
                             badKey: v
                         };
-                    else if (s1[v].default) {
-                        doc[v] = s1[v].default;
+                    else if (s1[v].default && !opts.ignoreDefault) {
+                        if (typeof s1[v].default == "function")
+                            doc[v] = s1[v].default();
+                        else
+                            doc[v] = s1[v].default;
                     }
                     continue;
                 }

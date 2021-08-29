@@ -37,9 +37,3 @@ export {
     validTot,
     waitForConnection,
 }
-
-/**
- * How stuff works
- *
- * sauihjdkmsaiodklas
- */

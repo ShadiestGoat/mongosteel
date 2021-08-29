@@ -2726,6 +2726,9 @@ img {
 					<a href="Model.html#doc" class="tsd-kind-icon">doc</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a href="Model.html#methods" class="tsd-kind-icon">methods</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a href="Model.html#saved" class="tsd-kind-icon">saved</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
@@ -2807,13 +2810,16 @@ img {
 				<li>
 					<h4>MLean</h4>
 				</li>
+				<li>
+					<h4>MMethods<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
+				</li>
 			</ul>
 		</section>
 		<section class="tsd-panel tsd-hierarchy">
 			<h3>Hierarchy</h3>
 			<ul class="tsd-hierarchy">
 				<li>
-					<span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span>
+					<span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">MMethods</span><span class="tsd-signature-symbol">&gt;</span>
 					<ul class="tsd-hierarchy">
 						<li>
 							<span class="target">Model</span>
@@ -2838,6 +2844,7 @@ img {
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="Model.html#colName" class="tsd-kind-icon">col<wbr>Name</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="Model.html#collection" class="tsd-kind-icon">collection</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="Model.html#doc" class="tsd-kind-icon">doc</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="Model.html#methods" class="tsd-kind-icon">methods</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="Model.html#saved" class="tsd-kind-icon">saved</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="Model.html#schema" class="tsd-kind-icon">schema</a></li>
 						</ul>
@@ -2863,14 +2870,14 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-interface tsd-is-inherited">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Model<span class="tsd-signature-symbol">(</span>doc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">, </span><a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Model<span class="tsd-signature-symbol">(</span>doc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from trueModel&lt;MLean&gt;.constructor</p>
+							<p>Inherited from trueModel&lt;MLean, MMethods&gt;.constructor</p>
 							<ul>
-								<li>Defined in lib/model.ts:117</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L119">lib/model.ts:119</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2879,7 +2886,7 @@ img {
 								<h5>doc: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 							</li>
 						</ul>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">, </span><a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">trueModel</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -2893,7 +2900,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Overrides trueModel.colName</p>
 					<ul>
-						<li>Defined in lib/model.ts:118</li>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L120">lib/model.ts:120</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2904,7 +2911,7 @@ img {
 				<aside class="tsd-sources">
 					<p>Overrides trueModel.collection</p>
 					<ul>
-						<li>Defined in lib/model.ts:119</li>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L121">lib/model.ts:121</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2915,7 +2922,18 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from trueModel.doc</p>
 					<ul>
-						<li>Defined in lib/model.ts:27</li>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L27">lib/model.ts:27</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+				<a name="methods" class="tsd-anchor"></a>
+				<h3>methods</h3>
+				<div class="tsd-signature tsd-kind-icon">methods<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">MMethods</span></div>
+				<aside class="tsd-sources">
+					<p>Inherited from trueModel.methods</p>
+					<ul>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L31">lib/model.ts:31</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2926,18 +2944,18 @@ img {
 				<aside class="tsd-sources">
 					<p>Inherited from trueModel.saved</p>
 					<ul>
-						<li>Defined in lib/model.ts:30</li>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L30">lib/model.ts:30</a></li>
 					</ul>
 				</aside>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 				<a name="schema" class="tsd-anchor"></a>
 				<h3>schema</h3>
-				<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<div class="tsd-signature tsd-kind-icon">schema<span class="tsd-signature-symbol">:</span> <a href="../classes/Schema.html" class="tsd-signature-type" data-tsd-kind="Class">Schema</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">OptionalId</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">MLean</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></div>
 				<aside class="tsd-sources">
 					<p>Inherited from trueModel.schema</p>
 					<ul>
-						<li>Defined in lib/model.ts:26</li>
+						<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L26">lib/model.ts:26</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2954,7 +2972,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:143</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L145">lib/model.ts:145</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -2982,7 +3000,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:123</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L125">lib/model.ts:125</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3010,7 +3028,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:127</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L129">lib/model.ts:129</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3038,7 +3056,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:131</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L133">lib/model.ts:133</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3066,7 +3084,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:135</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L137">lib/model.ts:137</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3097,7 +3115,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in lib/model.ts:139</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L141">lib/model.ts:141</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -3129,7 +3147,7 @@ img {
 						<aside class="tsd-sources">
 							<p>Inherited from trueModel.save</p>
 							<ul>
-								<li>Defined in lib/model.ts:56</li>
+								<li>Defined in <a href="https://github.com/ShadiestGoat/mongosteel/blob/c31c9fa/lib/model.ts#L58">lib/model.ts:58</a></li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
