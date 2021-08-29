@@ -32,7 +32,8 @@
     "build": "tsc",
     "clean": "rm -rf dist",
     "start": "node .",
-    "build:docs": "rm -rf ./docs/dist && typedoc"
+    "build:docs": "rm -rf ./docs/dist && typedoc",
+    "prepublish": "npm run build && npm run build:docs"
   },
   "repository": {
     "type": "git",
