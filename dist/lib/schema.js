@@ -24,10 +24,19 @@ class Schema {
                 };
             }
             else if (Array.isArray(val)) {
-                return {
-                    type: [parser(val[0])],
-                    required: true
-                };
+                if (val.length == 2) {
+                    //this means its unkown keys
+                    return {
+                        type: ["string", parser(val[1])],
+                        required: true
+                    };
+                }
+                else {
+                    return {
+                        type: [parser(val[0])],
+                        required: true
+                    };
+                }
             }
             else {
                 if (typeof val != 'object')
@@ -87,6 +96,19 @@ class Schema {
                     continue;
                 }
                 if (Array.isArray(s1[v].type)) {
+                    if (s1[v].type.length == 2) {
+                        if (typeof s2[v] != "object" || Array.isArray(s2[v]))
+                            return {
+                                valid: false,
+                                reason: "badType",
+                                badKey: v
+                            };
+                        for (const value in s2[v]) {
+                            const res = inc(s1[v].type[1], s2[v][value]);
+                            if (!res.valid)
+                                return res;
+                        }
+                    }
                     if (!Array.isArray(s2[v]))
                         return {
                             valid: false,

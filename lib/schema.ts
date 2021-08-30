@@ -5,6 +5,8 @@ export type TypeToString<T extends unknown, R extends boolean> = T extends strin
                                        T extends number ? 'number' :
                                        T extends boolean ? "boolean" :
                                        T extends Array<infer U> ? [TypeToString<U, false>] :
+                                       // eslint-disable-next-line @typescript-eslint/ban-types
+                                       T extends {} ? ["string", TypeToString<T[keyof T], false>] : //in case of unknown keys like {[key:string]: whatever}
                                        T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
                                        unknown
 
@@ -105,9 +107,17 @@ export class Schema<SHLean = unknown> {
                     required: true
                 }
             } else if (Array.isArray(val)) {
-                return {
-                    type: [parser(val[0])],
-                    required: true
+                if (val.length == 2) {
+                    //this means its unkown keys
+                    return {
+                        type: ["string", parser(val[1])],
+                        required: true
+                    }
+                } else {
+                    return {
+                        type: [parser(val[0])],
+                        required: true
+                    }
                 }
             } else {
                 if (typeof val != 'object') throw new Error('Unrecognised schema type!')
@@ -158,6 +168,17 @@ export class Schema<SHLean = unknown> {
                     continue
                 }
                 if (Array.isArray(s1[v].type)) {
+                    if ((s1[v].type as unknown[]).length == 2) {
+                        if (typeof s2[v] != "object" || Array.isArray(s2[v])) return {
+                            valid: false,
+                            reason: "badType",
+                            badKey: v
+                        }
+                        for (const value in (s2[v] as Record<string, never>)) {
+                            const res = inc(s1[v].type[1], (s2[v] as Record<string, never>)[value])
+                            if (!res.valid) return res
+                        }
+                    }
                     if (!Array.isArray(s2[v])) return {
                         valid: false,
                         reason: "badType",
