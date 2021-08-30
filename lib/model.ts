@@ -21,7 +21,9 @@ function getCollection<L>(name:string):Collection<L> {
     return mongoSteelConnection.db.collection(name)
 }
 
-class trueModel<Lean, MMethods extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
+type genericFunctions<Lean, Methods extends genericFunctions<Lean, Methods>> = Record<string, ((this:Model<Lean, Methods>, ...args: unknown[]) => unknown)>
+
+class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record<string, never>, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
     static schema:Schema<unknown>
     schema:SH
     doc:OptionalId<Lean>
@@ -115,7 +117,7 @@ class trueModel<Lean, MMethods extends Record<string, (...args: unknown[]) => un
 /**
  * The Model class. This should not be called directly, check model() for getting this class.  This should only be used for types
  */
-export interface Model<MLean, MMethods extends Record<string, (...args: unknown[]) => unknown> = Record<string, never>> extends trueModel<MLean, MMethods> {
+export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods> = Record<string, never>> extends trueModel<MLean, MMethods> {
     new(doc:Partial<OptionalId<MLean>>):trueModel<MLean>
     colName:string
     collection:Collection<MLean>
@@ -151,7 +153,7 @@ export interface Model<MLean, MMethods extends Record<string, (...args: unknown[
  * @param schema the shema for that collection
  * @returns the model class.
  */
-export function model<Lean, Methods extends Record<string, (this:Model<Lean, Methods>, ...args: unknown[]) => unknown> = Record<string, never>>(collection:string, schema:Schema<OptionalId<Lean>>, methods:Methods):Model<Lean, Methods> {
+export function model<Lean, Methods extends genericFunctions<Lean, Methods> = Record<string, never>>(collection:string, schema:Schema<OptionalId<Lean>>, methods:Methods):Model<Lean, Methods> {
     class MModel extends trueModel<Lean, Methods> {
         constructor(doc:Partial<OptionalId<Lean>> = {}) {
             super(collection, schema, doc, methods)
