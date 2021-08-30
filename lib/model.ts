@@ -21,7 +21,7 @@ function getCollection<L>(name:string):Collection<L> {
     return mongoSteelConnection.db.collection(name)
 }
 
-type genericFunctions<Lean, Methods extends genericFunctions<Lean, Methods>> = Record<string, ((this:Model<Lean, Methods>, ...args: unknown[]) => unknown)>
+export type genericFunctions<Lean, Methods extends genericFunctions<Lean, Methods>> = Record<string, ((this:Model<Lean, Methods>, ...args: unknown[]) => unknown)>
 
 class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record<string, never>, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
     static schema:Schema<unknown>

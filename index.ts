@@ -11,13 +11,14 @@ import {
 import {
     model,
     Model,
-    waitForConnection
+    waitForConnection,
+    genericFunctions
 } from "./lib/model"
 import {
     ConnectionOptions,
     MongoSteel,
     toUrl,
-    mongoSteelOpts
+    mongoSteelOpts,
 } from "./lib/connection"
 
 export {
@@ -36,4 +37,5 @@ export {
     invalid,
     validTot,
     waitForConnection,
+    genericFunctions
 }
