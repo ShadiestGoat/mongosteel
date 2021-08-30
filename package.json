@@ -33,7 +33,7 @@
     "clean": "rm -rf dist",
     "start": "node .",
     "build:docs": "rm -rf ./docs/dist && typedoc",
-    "prepublishOnly": "npm run build && npm run build:docs"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

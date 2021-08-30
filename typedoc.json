@@ -4,5 +4,6 @@
     ],
     "out": "./docs/dist",
     "readme": "./docs/src/HowToUse.md",
-    "theme": "minimal"
+    "theme": "minimal",
+    "disableSources": true
 }

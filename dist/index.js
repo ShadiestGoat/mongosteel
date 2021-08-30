@@ -9,8 +9,3 @@ Object.defineProperty(exports, "waitForConnection", { enumerable: true, get: fun
 const connection_1 = require("./lib/connection");
 Object.defineProperty(exports, "MongoSteel", { enumerable: true, get: function () { return connection_1.MongoSteel; } });
 Object.defineProperty(exports, "toUrl", { enumerable: true, get: function () { return connection_1.toUrl; } });
-/**
- * How stuff works
- *
- * sauihjdkmsaiodklas
- */
