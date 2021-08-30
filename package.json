@@ -1,6 +1,6 @@
 {
   "name": "mongosteel",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A solid ODM for MongoDB",
   "main": "dist/index",
   "typings": "dist/index",
