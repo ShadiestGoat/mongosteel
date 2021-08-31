@@ -12,6 +12,7 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
     static colName: string;
     colName: string;
     saved: boolean;
+    static methods: unknown;
     methods: MMethods;
     /**
      * This is not used within the class, this is intended for any future plugin support, or current workaround methods
@@ -29,7 +30,7 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
      */
     save(): Promise<OptionalId<Lean>>;
     static find(filter: Partial<unknown>): Promise<unknown[]>;
-    static findOne(filter: Partial<unknown>): Promise<unknown | undefined>;
+    static findOne(filter: Partial<unknown>): Promise<unknown | null>;
     static findOneAndDelete(filter: Partial<unknown>): Promise<unknown>;
     static findOneAndReplace(filter: Partial<unknown>, replacement: Record<string, never>): Promise<unknown>;
     static findOneAndUpdate(filter: Partial<unknown>, update: UpdateFilter<unknown>): Promise<unknown>;
@@ -42,6 +43,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     new (doc: Partial<OptionalId<MLean>>): trueModel<MLean>;
     colName: string;
     collection: Collection<MLean>;
+    methods: MMethods;
     /**
      * Find multiple documents in your collection using properties of your document
      */
@@ -49,7 +51,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find the first document that has all the properties in the filter argument
      */
-    findOne(filter: Partial<MLean>): Promise<MLean | undefined>;
+    findOne(filter: Partial<MLean>): Promise<MLean | null>;
     /**
      * Find the first document that has all the properties in the filter argument and delete it.
      */

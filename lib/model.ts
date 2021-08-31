@@ -30,6 +30,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     static colName:string
     colName:string
     saved:boolean
+    static methods:unknown
     methods:MMethods
     /**
      * This is not used within the class, this is intended for any future plugin support, or current workaround methods
@@ -121,6 +122,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     new(doc:Partial<OptionalId<MLean>>):trueModel<MLean>
     colName:string
     collection:Collection<MLean>
+    methods:MMethods
     /**
      * Find multiple documents in your collection using properties of your document
      */
@@ -162,6 +164,6 @@ export function model<Lean, Methods extends genericFunctions<Lean, Methods> = Re
     MModel.colName = collection
     MModel.schema = schema as Schema
     MModel.collection = (getCollection<Lean>(collection) as unknown) as Collection
-
+    MModel.methods = methods
     return (MModel as unknown) as Model<Lean, Methods>
 }

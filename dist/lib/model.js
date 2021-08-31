@@ -139,6 +139,7 @@ function model(collection, schema, methods) {
     MModel.colName = collection;
     MModel.schema = schema;
     MModel.collection = getCollection(collection);
+    MModel.methods = methods;
     return MModel;
 }
 exports.model = model;
