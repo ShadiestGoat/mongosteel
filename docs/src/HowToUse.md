@@ -16,6 +16,7 @@ type kitten = {
     }
 }
 ```
+Now note here that this is a type alias, not an interface. Interfaces only half work as of current patch, so please use type aliases!
 
 We want this type in a collection, so first off, lets connect to a database!
 
@@ -142,7 +143,7 @@ await kittyModel.find({name: "Nora"}) // [{name: "Nora", type: {breed: "none", f
 ```
 Great ^^
 
-Unfortunately, as of current patch (1.0.0), the actual query syntax from mongodb are not fully supported yet. 
+Unfortunately, as of current patch (1.1.1), the actual query syntax from mongodb are not fully supported yet. 
 
 You can also add methods to your model through schema:
 
@@ -161,3 +162,11 @@ export const kittyModel = model<kitten, kittenMethods>('kittyCollection', kittyS
 ```
 
 Note the use `function () {}` rather than an arrow function. Arrow functions do not work right in regards to this system.
+
+
+## Schema with unknown keys
+
+So sometimes, you want to have an object with unkown keys. That alright, we all have that urge :)
+
+With mongosteel you can actually do this! Simply define a type as `Record<string, yourtype>` or `{[key:string], yourtype}`, and then plug that into the `Schema<Generics>`! For that unknown property youll have to do an array, with 2 values (important thats its only 2 values in that array!), `["string", TypeToString<yourtype>]`, though that is given to you by the types :)
+

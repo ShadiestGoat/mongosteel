@@ -9,8 +9,6 @@ export type TypeToString<T, R extends boolean = false> = T extends string ? 'str
                                        T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
                                        unknown
 
-
-
 /**
  * Options for your type
  */

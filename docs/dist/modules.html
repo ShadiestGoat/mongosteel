@@ -2728,6 +2728,9 @@ img {
 		<li class=" tsd-kind-type-alias tsd-has-type-parameter">
 			<a href="modules.html#TypeToString" class="tsd-kind-icon">Type<wbr>ToString</a>
 		</li>
+		<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+			<a href="modules.html#genericFunctions" class="tsd-kind-icon">generic<wbr>Functions</a>
+		</li>
 		<li class=" tsd-kind-type-alias">
 			<a href="modules.html#invalid" class="tsd-kind-icon">invalid</a>
 		</li>
@@ -2771,6 +2774,7 @@ img {
 <span style="color: #000000">    }</span>
 <span style="color: #000000">}</span>
 </code></pre>
+			<p>Now note here that this is a type alias, not an interface. Interfaces only half work as of current patch, so please use type aliases!</p>
 			<p>We want this type in a collection, so first off, lets connect to a database!</p>
 			<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MongoSteel</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;mongosteel&quot;</span>
 
@@ -2877,7 +2881,7 @@ img {
 <span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">kittyModel</span><span style="color: #000000">.</span><span style="color: #795E26">find</span><span style="color: #000000">({</span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Nora&quot;</span><span style="color: #000000">}) </span><span style="color: #008000">// [{name: &quot;Nora&quot;, type: {breed: &quot;none&quot;, furColor: [&quot;brown&quot;, &quot;grey&quot;, &quot;dark brown&quot;]}}]</span>
 </code></pre>
 			<p>Great ^^</p>
-			<p>Unfortunately, as of current patch (1.0.0), the actual query syntax from mongodb are not fully supported yet. </p>
+			<p>Unfortunately, as of current patch (1.1.1), the actual query syntax from mongodb are not fully supported yet. </p>
 			<p>You can also add methods to your model through schema:</p>
 			<pre><code class="language-ts"><span style="color: #008000">// same type &amp; schema setup</span>
 
@@ -2892,6 +2896,11 @@ img {
 <span style="color: #000000">})</span>
 </code></pre>
 			<p>Note the use <code>function () {}</code> rather than an arrow function. Arrow functions do not work right in regards to this system.</p>
+			<a href="#schema-with-unknown-keys" id="schema-with-unknown-keys" style="color: inherit; text-decoration: none;">
+				<h2>Schema with unknown keys</h2>
+			</a>
+			<p>So sometimes, you want to have an object with unkown keys. That alright, we all have that urge :)</p>
+			<p>With mongosteel you can actually do this! Simply define a type as <code>Record&lt;string, yourtype&gt;</code> or <code>{[key:string], yourtype}</code>, and then plug that into the <code>Schema&lt;Generics&gt;</code>! For that unknown property youll have to do an array, with 2 values (important thats its only 2 values in that array!), <code>[&quot;string&quot;, TypeToString&lt;yourtype&gt;]</code>, though that is given to you by the types :)</p>
 		</div>
 		<section class="tsd-panel-group tsd-index-group">
 			<h2>Index</h2>
@@ -2918,6 +2927,7 @@ img {
 							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#SchemaFull" class="tsd-kind-icon">Schema<wbr>Full</a></li>
 							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#SchemaTypeOptions" class="tsd-kind-icon">Schema<wbr>Type<wbr>Options</a></li>
 							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#TypeToString" class="tsd-kind-icon">Type<wbr>ToString</a></li>
+							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#genericFunctions" class="tsd-kind-icon">generic<wbr>Functions</a></li>
 							<li class="tsd-kind-type-alias"><a href="modules.html#invalid" class="tsd-kind-icon">invalid</a></li>
 							<li class="tsd-kind-type-alias"><a href="modules.html#mongoSteelOpts" class="tsd-kind-icon">mongo<wbr>Steel<wbr>Opts</a></li>
 							<li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#valid" class="tsd-kind-icon">valid</a></li>
@@ -3078,7 +3088,7 @@ img {
 			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
 				<a name="TypeToString" class="tsd-anchor"></a>
 				<h3>Type<wbr>ToString</h3>
-				<div class="tsd-signature tsd-kind-icon">Type<wbr>ToString&lt;T, R&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;number&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;boolean&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">infer </span> U<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">[</span><a href="modules.html#TypeToString" class="tsd-signature-type" data-tsd-kind="Type alias">TypeToString</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> : </span><a href="modules.html#SchemaDefinition" class="tsd-signature-type" data-tsd-kind="Type alias">SchemaDefinition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">unknown</span></div>
+				<div class="tsd-signature tsd-kind-icon">Type<wbr>ToString&lt;T, R&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;number&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">&quot;boolean&quot;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-symbol">infer </span> U<span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">[</span><a href="modules.html#TypeToString" class="tsd-signature-type" data-tsd-kind="Type alias">TypeToString</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">U</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol">, </span><a href="modules.html#TypeToString" class="tsd-signature-type" data-tsd-kind="Type alias">TypeToString</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-symbol">keyof </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">false</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">R</span><span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> ? </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> : </span><a href="modules.html#SchemaDefinition" class="tsd-signature-type" data-tsd-kind="Type alias">SchemaDefinition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> : </span><span class="tsd-signature-type">unknown</span></div>
 				<aside class="tsd-sources">
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -3089,10 +3099,26 @@ img {
 				<h4 class="tsd-type-parameters-title">Type parameters</h4>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span></h4>
+						<h4>T</h4>
 					</li>
 					<li>
-						<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h4>
+						<h4>R<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span> = <span class="tsd-signature-type">false</span></h4>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-has-type-parameter">
+				<a name="genericFunctions" class="tsd-anchor"></a>
+				<h3>generic<wbr>Functions</h3>
+				<div class="tsd-signature tsd-kind-icon">generic<wbr>Functions&lt;Lean, Methods&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><a href="interfaces/Model.html" class="tsd-signature-type" data-tsd-kind="Interface">Model</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Lean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Methods</span><span class="tsd-signature-symbol">&gt;</span>, <span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<aside class="tsd-sources">
+				</aside>
+				<h4 class="tsd-type-parameters-title">Type parameters</h4>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>Lean</h4>
+					</li>
+					<li>
+						<h4>Methods<span class="tsd-signature-symbol">: </span><a href="modules.html#genericFunctions" class="tsd-signature-type" data-tsd-kind="Type alias">genericFunctions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Lean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Methods</span><span class="tsd-signature-symbol">&gt;</span></h4>
 					</li>
 				</ul>
 			</section>
@@ -3194,7 +3220,7 @@ img {
 								<h4>Lean</h4>
 							</li>
 							<li>
-								<h4>Methods<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">unknown</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
+								<h4>Methods<span class="tsd-signature-symbol">: </span><a href="modules.html#genericFunctions" class="tsd-signature-type" data-tsd-kind="Type alias">genericFunctions</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Lean</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">Methods</span><span class="tsd-signature-symbol">&gt;</span> = <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">never</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							</li>
 						</ul>
 						<h4 class="tsd-parameters-title">Parameters</h4>
