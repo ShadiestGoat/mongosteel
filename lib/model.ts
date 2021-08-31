@@ -75,7 +75,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         return await col.find(filter).toArray()
     }
 
-    static async findOne(filter:Partial<unknown>):Promise<unknown | undefined> {
+    static async findOne(filter:Partial<unknown>):Promise<unknown | null> {
         const col = getCollection<unknown>(this.colName)
         return await col.findOne(filter)
     }
@@ -128,7 +128,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find the first document that has all the properties in the filter argument
      */
-    findOne(filter:Partial<MLean>):Promise<MLean | undefined>
+    findOne(filter:Partial<MLean>):Promise<MLean | null>
     /**
      * Find the first document that has all the properties in the filter argument and delete it.
      */
