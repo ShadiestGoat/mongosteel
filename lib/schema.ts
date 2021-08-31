@@ -1,14 +1,15 @@
 /**
  * Convert a type to a string of that type. Nested shemas convert to SchemaDefinition
  */
-export type TypeToString<T extends unknown, R extends boolean> = T extends string ? 'string' :
+export type TypeToString<T, R extends boolean = false> = T extends string ? 'string' :
                                        T extends number ? 'number' :
                                        T extends boolean ? "boolean" :
                                        T extends Array<infer U> ? [TypeToString<U, false>] :
-                                       // eslint-disable-next-line @typescript-eslint/ban-types
-                                       T extends {} ? ["string", TypeToString<T[keyof T], false>] : //in case of unknown keys like {[key:string]: whatever}
+                                       Record<string,never> extends T ? ["string", TypeToString<T[keyof T], false>] : //in case of unknown keys like {[key:string]: whatever}
                                        T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
                                        unknown
+
+
 
 /**
  * Options for your type
@@ -99,7 +100,7 @@ export class MongoSteelValidityError extends Error {
 export class Schema<SHLean = unknown> {
     schema:SchemaFull<SHLean>
     constructor(schema:SchemaDefinition<SHLean>) {
-        function parser(val:unknown):SchemaTypeOptions<unknown> {
+        function parser(val:unknown):unknown {
             if (typeof val == "string") {
                 if (!val) val = "string" //use string as default!
                 return {
@@ -123,7 +124,7 @@ export class Schema<SHLean = unknown> {
                 if (typeof val != 'object') throw new Error('Unrecognised schema type!')
                 if (Object.keys(val as Record<string, unknown>).includes('type') && Object.keys(val as Record<string, unknown>).includes('required')) {
                     // schema type options
-                    if (typeof (val as SchemaTypeOptions<unknown>).type == "object") (val as SchemaTypeOptions<unknown>).type = parser((val as SchemaTypeOptions<unknown>).type)
+                    if (typeof (val as SchemaTypeOptions<unknown>).type == "object") (val as Record<string, unknown>).type = parser((val as SchemaTypeOptions<unknown>).type)
                     return val as SchemaTypeOptions<unknown>
                 } else {
                     // nested schema
@@ -137,7 +138,7 @@ export class Schema<SHLean = unknown> {
             if (Array.isArray(obj)) throw new Error('Schema can\'t be an array!')
             if (typeof obj != 'object') throw new Error('Unrecognised schema type!')
             Object.keys(obj as Record<string, unknown>).forEach((v) => {
-                newSH[v] = parser((obj as Record<string, unknown>)[v])
+                newSH[v] = parser((obj as Record<string, unknown>)[v]) as SchemaTypeOptions<unknown>
             })
             return newSH
         }
