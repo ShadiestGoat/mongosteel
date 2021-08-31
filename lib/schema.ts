@@ -1,13 +1,13 @@
 /**
  * Convert a type to a string of that type. Nested shemas convert to SchemaDefinition
  */
-export type TypeToString<T, R extends boolean = false> = T extends string ? 'string' :
+export type TypeToString<T, R extends boolean = false> = (T extends string ? 'string' :
                                        T extends number ? 'number' :
                                        T extends boolean ? "boolean" :
                                        T extends Array<infer U> ? [TypeToString<U, false>] :
                                        Record<string,never> extends T ? ["string", TypeToString<T[keyof T], false>] : //in case of unknown keys like {[key:string]: whatever}
                                        T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
-                                       unknown
+                                       "mixed") | "mixed"
 
 /**
  * Options for your type
@@ -218,6 +218,8 @@ export class Schema<SHLean = unknown> {
                                     badKey: v
                                 }
                             }
+                            continue
+                        case "mixed":
                             continue
                         default:
                             console.warn(`Unknown type for ${v}! The schema says ${s1[v].type}`)

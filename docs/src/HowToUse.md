@@ -170,3 +170,7 @@ So sometimes, you want to have an object with unkown keys. That alright, we all 
 
 With mongosteel you can actually do this! Simply define a type as `Record<string, yourtype>` or `{[key:string], yourtype}`, and then plug that into the `Schema<Generics>`! For that unknown property youll have to do an array, with 2 values (important thats its only 2 values in that array!), `["string", TypeToString<yourtype>]`, though that is given to you by the types :)
 
+## Mixed
+
+Say we have a mixed type. It is chaotic in there. As of now, your options are to use `"mixed"` in the schema and it just wont type check it. In future versions this will be changed however.
+

@@ -158,6 +158,8 @@ class Schema {
                                     };
                             }
                             continue;
+                        case "mixed":
+                            continue;
                         default:
                             console.warn(`Unknown type for ${v}! The schema says ${s1[v].type}`);
                             continue;

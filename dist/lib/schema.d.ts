@@ -1,7 +1,7 @@
 /**
  * Convert a type to a string of that type. Nested shemas convert to SchemaDefinition
  */
-export declare type TypeToString<T, R extends boolean = false> = T extends string ? 'string' : T extends number ? 'number' : T extends boolean ? "boolean" : T extends Array<infer U> ? [TypeToString<U, false>] : Record<string, never> extends T ? ["string", TypeToString<T[keyof T], false>] : T extends Record<string, unknown> ? R extends true ? undefined : SchemaDefinition<T> : unknown;
+export declare type TypeToString<T, R extends boolean = false> = (T extends string ? 'string' : T extends number ? 'number' : T extends boolean ? "boolean" : T extends Array<infer U> ? [TypeToString<U, false>] : Record<string, never> extends T ? ["string", TypeToString<T[keyof T], false>] : T extends Record<string, unknown> ? R extends true ? undefined : SchemaDefinition<T> : "mixed") | "mixed";
 /**
  * Options for your type
  */
