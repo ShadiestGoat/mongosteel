@@ -53,7 +53,7 @@ class MongoSteel {
                 throw new Error(`I have nothing to connect to!`);
             const url = typeof connection == "string" ? encodeURI(connection) : toUrl(connection);
             const client = yield mongodb_1.MongoClient.connect(url, Object.assign({ useNewUrlParser: true, useUnifiedTopology: true }, opts));
-            const db = client.db(undefined);
+            const db = client.db();
             const SteelOpts = Object.assign({}, mongoSteelSettings);
             exports.mongoSteelConnection = {
                 on: true,

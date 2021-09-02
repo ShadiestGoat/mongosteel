@@ -80,7 +80,7 @@ class Schema {
         function inc(s1, s2) {
             var _a;
             for (const v in s1) {
-                if (!Object.keys(s2).includes(v)) {
+                if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
                     if (s1[v].required && !opts.ignoreRequired)
                         return {
                             valid: false,
@@ -95,7 +95,7 @@ class Schema {
                     }
                     continue;
                 }
-                if (Array.isArray(s1[v].type)) {
+                else if (Array.isArray(s1[v].type)) {
                     if (s1[v].type.length == 2) {
                         if (typeof s2[v] != "object" || Array.isArray(s2[v]))
                             return {
@@ -115,11 +115,13 @@ class Schema {
                             reason: "badType",
                             badKey: v
                         };
-                    const res = inc(s1[v].type[0], s2[v][0]);
-                    if (!res.valid)
-                        return res;
+                    s2[v].forEach(value => {
+                        const res = inc(s1[v].type[0], value);
+                        if (!res.valid)
+                            return res;
+                    });
                 }
-                if (typeof s1[v].type == "object") {
+                else if (typeof s1[v].type == "object") {
                     const res = inc(s1[v].type, s2[v]);
                     if (!res.valid)
                         return res;

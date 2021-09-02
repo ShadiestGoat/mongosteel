@@ -23,7 +23,6 @@ function waitForConnection() {
 }
 exports.waitForConnection = waitForConnection;
 function getCollection(name) {
-    waitForConnection();
     if (!connection_1.mongoSteelConnection.on)
         throw "Please don't manually set this variable!";
     return connection_1.mongoSteelConnection.db.collection(name);
@@ -31,7 +30,6 @@ function getCollection(name) {
 class trueModel {
     constructor(collection, schema, doc, methods) {
         this.colName = collection;
-        this.collection = getCollection(collection);
         const validate = schema.validate(doc);
         if (!validate.valid && !connection_1.mongoSteelConnection.opts.noVerification)
             throw new schema_1.MongoSteelValidityError(validate);
@@ -128,7 +126,6 @@ function model(collection, schema, methods) {
     }
     MModel.colName = collection;
     MModel.schema = schema;
-    MModel.collection = getCollection(collection);
     MModel.methods = methods;
     return MModel;
 }

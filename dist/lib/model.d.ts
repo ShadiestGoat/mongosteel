@@ -1,4 +1,4 @@
-import { Collection, OptionalId, UpdateFilter } from "mongodb";
+import { OptionalId, UpdateFilter } from "mongodb";
 import { Schema } from "./schema";
 /**
  * A function to wait for you to connect :D
@@ -14,14 +14,6 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
     saved: boolean;
     static methods: unknown;
     methods: MMethods;
-    /**
-     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
-     */
-    collection: Collection<Lean>;
-    /**
-     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
-     */
-    static collection: Collection;
     private oldId;
     constructor(collection: string, schema: SH, doc: Partial<OptionalId<Lean>>, methods: MMethods);
     /**
@@ -42,7 +34,6 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
 export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods> = Record<string, never>> extends trueModel<MLean, MMethods> {
     new (doc: Partial<OptionalId<MLean>>): trueModel<MLean>;
     colName: string;
-    collection: Collection<MLean>;
     methods: MMethods;
     /**
      * Find multiple documents in your collection using properties of your document

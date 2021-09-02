@@ -2881,7 +2881,7 @@ img {
 <span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">kittyModel</span><span style="color: #000000">.</span><span style="color: #795E26">find</span><span style="color: #000000">({</span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Nora&quot;</span><span style="color: #000000">}) </span><span style="color: #008000">// [{name: &quot;Nora&quot;, type: {breed: &quot;none&quot;, furColor: [&quot;brown&quot;, &quot;grey&quot;, &quot;dark brown&quot;]}}]</span>
 </code></pre>
 			<p>Great ^^</p>
-			<p>Unfortunately, as of current patch (1.1.1), the actual query syntax from mongodb are not fully supported yet. </p>
+			<p>Unfortunately, as of current update (1.1.X), the actual query syntax from mongodb are not fully supported yet. </p>
 			<p>You can also add methods to your model through schema:</p>
 			<pre><code class="language-ts"><span style="color: #008000">// same type &amp; schema setup</span>
 
@@ -2896,6 +2896,7 @@ img {
 <span style="color: #000000">})</span>
 </code></pre>
 			<p>Note the use <code>function () {}</code> rather than an arrow function. Arrow functions do not work right in regards to this system.</p>
+			<p>Note that the use of the functions isn&#39;t fully tested and may cause issues.</p>
 			<a href="#schema-with-unknown-keys" id="schema-with-unknown-keys" style="color: inherit; text-decoration: none;">
 				<h2>Schema with unknown keys</h2>
 			</a>
