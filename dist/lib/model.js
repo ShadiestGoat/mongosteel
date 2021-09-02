@@ -16,17 +16,10 @@ const schema_1 = require("./schema");
  * A function to wait for you to connect :D
  */
 function waitForConnection() {
-    let tries = 0;
-    function inc() {
-        if (connection_1.mongoSteelConnection.on) {
-            clearInterval(this);
-            return;
-        }
-        if (tries > 11)
+    const badTime = Date.now() + 30 * 1000;
+    while (!connection_1.mongoSteelConnection.on)
+        if (Date.now() > badTime)
             throw "There is no connection!";
-        tries++;
-    }
-    setInterval(inc, 3000);
 }
 exports.waitForConnection = waitForConnection;
 function getCollection(name) {
@@ -37,18 +30,15 @@ function getCollection(name) {
 }
 class trueModel {
     constructor(collection, schema, doc, methods) {
-        waitForConnection();
-        if (!connection_1.mongoSteelConnection.on)
-            throw "Please don't manually set this variable!";
-        const validate = schema.validate(doc);
-        if (!validate.valid)
-            throw new schema_1.MongoSteelValidityError(validate);
-        this.doc = validate.res;
-        this.schema = schema;
         this.colName = collection;
+        this.collection = getCollection(collection);
+        const validate = schema.validate(doc);
+        if (!validate.valid && !connection_1.mongoSteelConnection.opts.noVerification)
+            throw new schema_1.MongoSteelValidityError(validate);
+        this.doc = validate.valid ? validate.res : doc;
+        this.schema = schema;
         this.saved = false;
         this.oldId = "";
-        this.collection = getCollection(collection);
         this.methods = methods;
     }
     /**

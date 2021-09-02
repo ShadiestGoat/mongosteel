@@ -49,6 +49,10 @@ export declare type mongoSteelOpts = {
      * Do not detect double-saving documents with the same _id
      */
     noIdDetection?: boolean;
+    /**
+     * Do not verify documents, default false.
+     */
+    noVerification?: boolean;
 };
 export declare class MongoSteel {
     /**
