@@ -143,7 +143,7 @@ await kittyModel.find({name: "Nora"}) // [{name: "Nora", type: {breed: "none", f
 ```
 Great ^^
 
-Unfortunately, as of current patch (1.1.1), the actual query syntax from mongodb are not fully supported yet. 
+Unfortunately, as of current update (1.1.X), the actual query syntax from mongodb are not fully supported yet. 
 
 You can also add methods to your model through schema:
 
@@ -163,6 +163,7 @@ export const kittyModel = model<kitten, kittenMethods>('kittyCollection', kittyS
 
 Note the use `function () {}` rather than an arrow function. Arrow functions do not work right in regards to this system.
 
+Note that the use of the functions isn't fully tested and may cause issues.
 
 ## Schema with unknown keys
 

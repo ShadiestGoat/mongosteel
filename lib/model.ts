@@ -6,12 +6,11 @@ import { MongoSteelValidityError, Schema } from "./schema";
  * A function to wait for you to connect :D
  */
 export function waitForConnection():void {
-    const badTime = Date.now() + 30 * 1000
+    const badTime = Date.now() + 30 * 1000;
     while (!mongoSteelConnection.on) if (Date.now() > badTime) throw "There is no connection!"
 }
 
 function getCollection<L>(name:string):Collection<L> {
-    waitForConnection()
     if (!mongoSteelConnection.on) throw "Please don't manually set this variable!"
     return mongoSteelConnection.db.collection(name)
 }
@@ -27,18 +26,9 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     saved:boolean
     static methods:unknown
     methods:MMethods
-    /**
-     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
-     */
-    collection:Collection<Lean>
-    /**
-     * This is not used within the class, this is intended for any future plugin support, or current workaround methods
-     */
-    static collection:Collection
     private oldId:string
     constructor(collection:string, schema:SH, doc:Partial<OptionalId<Lean>>, methods:MMethods) {
         this.colName = collection
-        this.collection = getCollection<Lean>(collection)
         const validate = schema.validate(doc)
         if (!validate.valid && !mongoSteelConnection.opts.noVerification) throw new MongoSteelValidityError(validate)
         this.doc = validate.valid ? validate.res : doc as OptionalId<Lean>
@@ -107,14 +97,12 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     }
 }
 
-
 /**
  * The Model class. This should not be called directly, check model() for getting this class.  This should only be used for types
  */
 export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods> = Record<string, never>> extends trueModel<MLean, MMethods> {
     new(doc:Partial<OptionalId<MLean>>):trueModel<MLean>
     colName:string
-    collection:Collection<MLean>
     methods:MMethods
     /**
      * Find multiple documents in your collection using properties of your document
@@ -156,7 +144,6 @@ export function model<Lean, Methods extends genericFunctions<Lean, Methods> = Re
     }
     MModel.colName = collection
     MModel.schema = schema as Schema
-    MModel.collection = (getCollection<Lean>(collection) as unknown) as Collection
     MModel.methods = methods
     return (MModel as unknown) as Model<Lean, Methods>
 }

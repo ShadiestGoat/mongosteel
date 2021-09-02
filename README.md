@@ -20,7 +20,7 @@ You can get support on [github's discussions](https://github.com/ShadiestGoat/mo
 ## Limitations
 
 1. A schema cannot have a property named 'type' and 'required' as those are currently used to identify schema options
-2. No plugins (though the collection property is exposed, so you can do what you want with that one ;))
+2. No plugins (though there are methods, which aren't fully tested and be slightly broken)
 3. Not all methods are implemented (due to some being superior, case and point: `findOneAndDelete` > `deleteOne`), but again the collection property is exposed, you can still call those methods from the mongodb driver
 
 ## Contributions
