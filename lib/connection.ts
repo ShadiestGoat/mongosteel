@@ -42,7 +42,7 @@ export function toUrl(opts:ConnectionOptions):string {
     })
     if (!opts.dbOpts) opts.dbOpts = {}
 
-    return `mongodb://${encodeURI(opts.user)}:${encodeURI(opts.password)}@${encodeURI(opts.location)}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${encodeURI(`${v}=${(opts.dbOpts ?? {})[v]}`)}`)}`
+    return `mongodb://${encodeURI(opts.user)}:${encodeURI(opts.password)}@${encodeURI(opts.location)}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${encodeURI(`${v}=${(opts.dbOpts ?? {})[v]}`)}`).join('')}`
 }
 
 type Connection = ({
