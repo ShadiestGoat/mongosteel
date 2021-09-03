@@ -26,7 +26,7 @@ function toUrl(opts) {
     });
     if (!opts.dbOpts)
         opts.dbOpts = {};
-    return `mongodb://${encodeURI(opts.user)}:${encodeURI(opts.password)}@${encodeURI(opts.location)}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v, i) => { var _a; return `${i == 0 ? '' : "&"}${encodeURI(`${v}=${((_a = opts.dbOpts) !== null && _a !== void 0 ? _a : {})[v]}`)}`; })}`;
+    return `mongodb://${encodeURI(opts.user)}:${encodeURI(opts.password)}@${encodeURI(opts.location)}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v, i) => { var _a; return `${i == 0 ? '' : "&"}${encodeURI(`${v}=${((_a = opts.dbOpts) !== null && _a !== void 0 ? _a : {})[v]}`)}`; }).join('')}`;
 }
 exports.toUrl = toUrl;
 /**

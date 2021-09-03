@@ -99,7 +99,9 @@ class trueModel {
                 throw new schema_1.MongoSteelValidityError(valid);
             // no need to update the update since there should be no mutations!
             const col = getCollection(this.colName);
-            const res = yield col.findOneAndUpdate(filter, update);
+            const res = yield col.findOneAndUpdate(filter, {
+                $set: update
+            });
             if (!res.ok)
                 throw new Error('findOneAndUpdate returned not OK');
             return res.value;

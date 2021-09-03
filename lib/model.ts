@@ -86,7 +86,9 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         // no need to update the update since there should be no mutations!
         const col = getCollection<unknown>(this.colName)
-        const res = await col.findOneAndUpdate(filter, update)
+        const res = await col.findOneAndUpdate(filter, {
+            $set: update
+        })
         if (!res.ok) throw new Error('findOneAndUpdate returned not OK')
         return res.value
     }
