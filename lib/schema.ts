@@ -194,47 +194,48 @@ export class Schema<SHLean = unknown> {
             if (Object.keys(s1 as Record<string, unknown>).includes('type') && Object.keys(s1 as Record<string, unknown>).includes('required')) {
                 const val = testType(s1 as SchemaTypeOptions<unknown>, s2, arrKey)
                 if (val) return val
-            }
-            for (const v in s1) {
-                if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
-                    if (s1[v].required && !opts.ignoreRequired) return {
-                        valid: false,
-                        reason: 'required',
-                        badKey: v
-                    }
-                    else if (s1[v].default && !opts.ignoreDefault) {
-                        if (typeof s1[v].default == "function") (doc as Record<string, unknown>)[v] = s1[v].default()
-                        else (doc as Record<string, unknown>)[v] = s1[v].default
-                    }
-                    continue
-                } else if (Array.isArray(s1[v].type)) {
-                    if ((s1[v].type as unknown[]).length == 2) {
-                        if (typeof s2[v] != "object" || Array.isArray(s2[v])) return {
+            } else {
+                for (const v in s1) {
+                    if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
+                        if (s1[v].required && !opts.ignoreRequired) return {
+                            valid: false,
+                            reason: 'required',
+                            badKey: v
+                        }
+                        else if (s1[v].default && !opts.ignoreDefault) {
+                            if (typeof s1[v].default == "function") (doc as Record<string, unknown>)[v] = s1[v].default()
+                            else (doc as Record<string, unknown>)[v] = s1[v].default
+                        }
+                        continue
+                    } else if (Array.isArray(s1[v].type)) {
+                        if ((s1[v].type as unknown[]).length == 2) {
+                            if (typeof s2[v] != "object" || Array.isArray(s2[v])) return {
+                                valid: false,
+                                reason: "badType",
+                                badKey: v
+                            }
+                            for (const value in (s2[v] as Record<string, never>)) {
+                                const res = inc(s1[v].type[1], (s2[v] as Record<string, never>)[value])
+                                if (!res.valid) return res
+                            }
+                        }
+                        if (!Array.isArray(s2[v])) return {
                             valid: false,
                             reason: "badType",
                             badKey: v
                         }
-                        for (const value in (s2[v] as Record<string, never>)) {
-                            const res = inc(s1[v].type[1], (s2[v] as Record<string, never>)[value])
+                        arrKey = v
+                        ;(s2[v] as Record<string, unknown>[]).forEach(value => {
+                            const res = inc((s1[v].type as [Record<string, unknown>])[0], value)
                             if (!res.valid) return res
-                        }
-                    }
-                    if (!Array.isArray(s2[v])) return {
-                        valid: false,
-                        reason: "badType",
-                        badKey: v
-                    }
-                    arrKey = v
-                    ;(s2[v] as Record<string, unknown>[]).forEach(value => {
-                        const res = inc((s1[v].type as [Record<string, unknown>])[0], value)
+                        })
+                    } else if (typeof s1[v].type == "object") {
+                        const res = inc(s1[v].type as Record<string, unknown>, s2[v] as Record<string, unknown>)
                         if (!res.valid) return res
-                    })
-                } else if (typeof s1[v].type == "object") {
-                    const res = inc(s1[v].type as Record<string, unknown>, s2[v] as Record<string, unknown>)
-                    if (!res.valid) return res
-                } else {
-                    const val = testType(s1[v], s2[v], v)
-                    if (val) return val
+                    } else {
+                        const val = testType(s1[v], s2[v], v)
+                        if (val) return val
+                    }
                 }
             }
             return { valid: true, res: doc as SHLean }
