@@ -77,8 +77,55 @@ class Schema {
                 valid: false,
                 reason: "majorBadType"
             };
-        function inc(s1, s2) {
+        function testType(opts, val, key) {
             var _a;
+            switch (opts.type) {
+                case "boolean":
+                    if (typeof val != "boolean")
+                        return {
+                            valid: false,
+                            reason: "badType",
+                            badKey: key
+                        };
+                    return false;
+                case "number":
+                    if (typeof val != "number")
+                        return {
+                            valid: false,
+                            reason: "badType",
+                            badKey: key
+                        };
+                    return false;
+                case "string":
+                    if (typeof val != "string")
+                        return {
+                            valid: false,
+                            reason: "badType",
+                            badKey: key
+                        };
+                    if (opts.pattern) {
+                        if (!((_a = opts.pattern) === null || _a === void 0 ? void 0 : _a.test(val)))
+                            return {
+                                valid: false,
+                                reason: "badType",
+                                badKey: key
+                            };
+                    }
+                    return false;
+                case "mixed":
+                    return false;
+                default:
+                    console.warn(`Unknown type for ${key}! The schema says ${opts.type}`);
+                    return false;
+            }
+        }
+        let arrKey = "";
+        function inc(s1, s2) {
+            if (Object.keys(s1).includes('type') && Object.keys(s1).includes('required')) {
+                const val = testType(s1, s2, arrKey);
+                if (val)
+                    return val;
+            }
             for (const v in s1) {
                 if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
                     if (s1[v].required && !opts.ignoreRequired)
@@ -115,6 +162,7 @@ class Schema {
                             reason: "badType",
                             badKey: v
                         };
+                    arrKey = v;
                     s2[v].forEach(value => {
                         const res = inc(s1[v].type[0], value);
                         if (!res.valid)
@@ -127,45 +175,9 @@ class Schema {
                         return res;
                 }
                 else {
-                    switch (s1[v].type) {
-                        case "boolean":
-                            if (typeof s2[v] != "boolean")
-                                return {
-                                    valid: false,
-                                    reason: "badType",
-                                    badKey: v
-                                };
-                            continue;
-                        case "number":
-                            if (typeof s2[v] != "number")
-                                return {
-                                    valid: false,
-                                    reason: "badType",
-                                    badKey: v
-                                };
-                            continue;
-                        case "string":
-                            if (typeof s2[v] != "string")
-                                return {
-                                    valid: false,
-                                    reason: "badType",
-                                    badKey: v
-                                };
-                            if (s1[v].pattern) {
-                                if (!((_a = s1[v].pattern) === null || _a === void 0 ? void 0 : _a.test(s2[v])))
-                                    return {
-                                        valid: false,
-                                        reason: "badType",
-                                        badKey: v
-                                    };
-                            }
-                            continue;
-                        case "mixed":
-                            continue;
-                        default:
-                            console.warn(`Unknown type for ${v}! The schema says ${s1[v].type}`);
-                            continue;
-                    }
+                    const val = testType(s1[v], s2[v], v);
+                    if (val)
+                        return val;
                 }
             }
             return { valid: true, res: doc };

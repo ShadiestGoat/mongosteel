@@ -152,7 +152,49 @@ export class Schema<SHLean = unknown> {
             valid: false,
             reason: "majorBadType"
         }
+        function testType(opts:SchemaTypeOptions<unknown>, val:unknown, key:string):false | invalid {
+            switch(opts.type) {
+                case "boolean":
+                    if (typeof val != "boolean") return {
+                        valid: false,
+                        reason: "badType",
+                        badKey: key
+                    }
+                    return false
+                case "number":
+                    if (typeof val != "number") return {
+                        valid: false,
+                        reason: "badType",
+                        badKey: key
+                    }
+                    return false
+                case "string":
+                    if (typeof val != "string") return {
+                        valid: false,
+                        reason: "badType",
+                        badKey: key
+                    }
+                    if ((opts as SchemaTypeOptions<string>).pattern) {
+                        if (!(opts as SchemaTypeOptions<string>).pattern?.test(val as string)) return {
+                            valid: false,
+                            reason: "badType",
+                            badKey: key
+                        }
+                    }
+                    return false
+                case "mixed":
+                    return false
+                default:
+                    console.warn(`Unknown type for ${key}! The schema says ${opts.type}`)
+                    return false
+            }
+        }
+        let arrKey = ""
         function inc(s1:Record<string, unknown> | SchemaTypeOptions<unknown>, s2:Record<string, unknown>):validTot<SHLean> {
+            if (Object.keys(s1 as Record<string, unknown>).includes('type') && Object.keys(s1 as Record<string, unknown>).includes('required')) {
+                const val = testType(s1 as SchemaTypeOptions<unknown>, s2, arrKey)
+                if (val) return val
+            }
             for (const v in s1) {
                 if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
                     if (s1[v].required && !opts.ignoreRequired) return {
@@ -182,6 +224,7 @@ export class Schema<SHLean = unknown> {
                         reason: "badType",
                         badKey: v
                     }
+                    arrKey = v
                     ;(s2[v] as Record<string, unknown>[]).forEach(value => {
                         const res = inc((s1[v].type as [Record<string, unknown>])[0], value)
                         if (!res.valid) return res
@@ -190,41 +233,8 @@ export class Schema<SHLean = unknown> {
                     const res = inc(s1[v].type as Record<string, unknown>, s2[v] as Record<string, unknown>)
                     if (!res.valid) return res
                 } else {
-                    switch(s1[v].type) {
-                        case "boolean":
-                            if (typeof s2[v] != "boolean") return {
-                                valid: false,
-                                reason: "badType",
-                                badKey: v
-                            }
-                            continue
-                        case "number":
-                            if (typeof s2[v] != "number") return {
-                                valid: false,
-                                reason: "badType",
-                                badKey: v
-                            }
-                            continue
-                        case "string":
-                            if (typeof s2[v] != "string") return {
-                                valid: false,
-                                reason: "badType",
-                                badKey: v
-                            }
-                            if ((s1[v] as SchemaTypeOptions<string>).pattern) {
-                                if (!(s1[v] as SchemaTypeOptions<string>).pattern?.test(s2[v] as string)) return {
-                                    valid: false,
-                                    reason: "badType",
-                                    badKey: v
-                                }
-                            }
-                            continue
-                        case "mixed":
-                            continue
-                        default:
-                            console.warn(`Unknown type for ${v}! The schema says ${s1[v].type}`)
-                            continue
-                    }
+                    const val = testType(s1[v], s2[v], v)
+                    if (val) return val
                 }
             }
             return { valid: true, res: doc as SHLean }
