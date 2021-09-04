@@ -1,4 +1,4 @@
-import { OptionalId, UpdateFilter } from "mongodb";
+import { OptionalId } from "mongodb";
 import { Schema } from "./schema";
 /**
  * A function to wait for you to connect :D
@@ -25,7 +25,7 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
     static findOne(filter: Partial<unknown>): Promise<unknown | null>;
     static findOneAndDelete(filter: Partial<unknown>): Promise<unknown>;
     static findOneAndReplace(filter: Partial<unknown>, replacement: Record<string, never>): Promise<unknown>;
-    static findOneAndUpdate(filter: Partial<unknown>, update: UpdateFilter<unknown>): Promise<unknown>;
+    static findOneAndUpdate(filter: Partial<unknown>, update: Partial<unknown>): Promise<unknown>;
     static deleteMany(filter: Partial<unknown>): Promise<void>;
 }
 /**
@@ -54,7 +54,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find the first document that matches all the properties in the filter argument, and do what is essentially Object.assign() on it with the update argument
      */
-    findOneAndUpdate(filter: Partial<MLean>, update: UpdateFilter<MLean>): Promise<MLean>;
+    findOneAndUpdate(filter: Partial<MLean>, update: Partial<MLean>): Promise<MLean>;
     /**
      * Delete all matching documents to the filter argument
      */

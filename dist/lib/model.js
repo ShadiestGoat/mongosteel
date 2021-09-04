@@ -53,6 +53,12 @@ class trueModel {
             const res = yield col.insertOne(this.doc);
             if (!res.insertedId)
                 throw Error('Not inserted');
+            if (!connection_1.mongoSteelConnection.opts.noDocsUpdate) {
+                const newDoc = yield col.findOne({ _id: res.insertedId });
+                if (!newDoc)
+                    throw Error('Weird');
+                this.doc = newDoc;
+            }
             this.saved = true;
             this.oldId = res.insertedId;
             return this.doc;

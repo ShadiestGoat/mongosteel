@@ -49,6 +49,11 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         }
         const res = await col.insertOne(this.doc)
         if (!res.insertedId) throw Error('Not inserted')
+        if (!mongoSteelConnection.opts.noDocsUpdate) {
+            const newDoc = await col.findOne({_id: res.insertedId} as unknown as Lean)
+            if (!newDoc) throw Error('Weird')
+            this.doc = newDoc as OptionalId<Lean>
+        }
         this.saved = true
         this.oldId = res.insertedId as string
         return this.doc
@@ -81,13 +86,13 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         return res.value
     }
 
-    static async findOneAndUpdate(filter:Partial<unknown>, update:UpdateFilter<unknown>):Promise<unknown> {
+    static async findOneAndUpdate(filter:Partial<unknown>, update:Partial<unknown>):Promise<unknown> {
         const valid = this.schema.validate(update, {ignoreDefault: true, ignoreRequired: true})
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         // no need to update the update since there should be no mutations!
         const col = getCollection<unknown>(this.colName)
         const res = await col.findOneAndUpdate(filter, {
-            $set: update
+            $set: update as UpdateFilter<unknown>
         })
         if (!res.ok) throw new Error('findOneAndUpdate returned not OK')
         return res.value
@@ -125,7 +130,7 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find the first document that matches all the properties in the filter argument, and do what is essentially Object.assign() on it with the update argument
      */
-    findOneAndUpdate(filter:Partial<MLean>, update:UpdateFilter<MLean>):Promise<MLean>
+    findOneAndUpdate(filter:Partial<MLean>, update:Partial<MLean>):Promise<MLean>
     /**
      * Delete all matching documents to the filter argument
      */

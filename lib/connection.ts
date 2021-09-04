@@ -77,7 +77,11 @@ export type mongoSteelOpts = {
     /**
      * Do not verify documents, default false.
      */
-    noVerification?:boolean
+    noVerification?:boolean,
+    /**
+     * Don't update the document whenever you save one. This is used to update types like Buffer & Binaries
+     */
+    noDocsUpdate?:boolean
 }
 
 export class MongoSteel {
