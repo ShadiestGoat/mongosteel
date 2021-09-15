@@ -143,7 +143,11 @@ await kittyModel.find({name: "Nora"}) // [{name: "Nora", type: {breed: "none", f
 ```
 Great ^^
 
-Unfortunately, as of current update (1.1.X), the actual query syntax from mongodb are not fully supported yet. 
+Unfortunately, as of current update (1.2.X), the actual query syntax from mongodb isn't 100% supported yet. But, you can use for example regex:
+
+```ts
+await kitteModel.find({name: /id-\d+/})
+```
 
 You can also add methods to your model through schema:
 
@@ -174,4 +178,3 @@ With mongosteel you can actually do this! Simply define a type as `Record<string
 ## Mixed
 
 Say we have a mixed type. It is chaotic in there. As of now, your options are to use `"mixed"` in the schema and it just wont type check it. In future versions this will be changed however.
-

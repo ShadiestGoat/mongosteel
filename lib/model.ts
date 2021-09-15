@@ -1,17 +1,21 @@
-import { Collection, OptionalId, UpdateFilter } from "mongodb";
+import { Collection, Condition, OptionalId, UpdateFilter } from "mongodb";
 import { mongoSteelConnection } from "./connection";
 import { MongoSteelValidityError, Schema } from "./schema";
+
+export type MongoSteelFilter<T> = {
+    [K in keyof T]: Condition<T[K]>
+}
 
 /**
  * A function to wait for you to connect :D
  */
 export function waitForConnection():void {
     const badTime = Date.now() + 30 * 1000;
-    while (!mongoSteelConnection.on) if (Date.now() > badTime) throw "There is no connection!"
+    while (!mongoSteelConnection.on) if (Date.now() > badTime) throw new Error("There is no connection!")
 }
 
 function getCollection<L>(name:string):Collection<L> {
-    if (!mongoSteelConnection.on) throw "Please don't manually set this variable!"
+    if (!mongoSteelConnection.on) throw new Error("Please don't manually set this variable!")
     return mongoSteelConnection.db.collection(name)
 }
 
@@ -59,24 +63,24 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         return this.doc
     }
 
-    static async find(filter:Partial<unknown>):Promise<unknown[]> {
+    static async find(filter:MongoSteelFilter<unknown>):Promise<unknown[]> {
         const col = getCollection<unknown>(this.colName)
         return await col.find(filter).toArray()
     }
 
-    static async findOne(filter:Partial<unknown>):Promise<unknown | null> {
+    static async findOne(filter:MongoSteelFilter<unknown>):Promise<unknown | null> {
         const col = getCollection<unknown>(this.colName)
         return await col.findOne(filter)
     }
 
-    static async findOneAndDelete(filter:Partial<unknown>):Promise<unknown> {
+    static async findOneAndDelete(filter:MongoSteelFilter<unknown>):Promise<unknown> {
         const col = getCollection<unknown>(this.colName)
         const res = await col.findOneAndDelete(filter)
         if (!res.ok) throw new Error('findOneAndDelete returned not OK')
         return res.value
     }
 
-    static async findOneAndReplace(filter:Partial<unknown>, replacement:Record<string, never>):Promise<unknown> {
+    static async findOneAndReplace(filter:MongoSteelFilter<unknown>, replacement:Record<string, unknown>):Promise<unknown> {
         const valid = this.schema.validate(replacement)
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         replacement = valid.res as Record<string, never>
@@ -86,7 +90,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         return res.value
     }
 
-    static async findOneAndUpdate(filter:Partial<unknown>, update:Partial<unknown>):Promise<unknown> {
+    static async findOneAndUpdate(filter:MongoSteelFilter<unknown>, update:Partial<unknown>):Promise<unknown> {
         const valid = this.schema.validate(update, {ignoreDefault: true, ignoreRequired: true})
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         // no need to update the update since there should be no mutations!
@@ -98,7 +102,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         return res.value
     }
 
-    static async deleteMany(filter:Partial<unknown>):Promise<void> {
+    static async deleteMany(filter:MongoSteelFilter<unknown>):Promise<void> {
         const col = getCollection<unknown>(this.colName)
         await col.deleteMany(filter)
     }
@@ -114,27 +118,27 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find multiple documents in your collection using properties of your document
      */
-    find(filter:Partial<MLean>):Promise<MLean[]>
+    find(filter:MongoSteelFilter<MLean>):Promise<MLean[]>
     /**
      * Find the first document that has all the properties in the filter argument
      */
-    findOne(filter:Partial<MLean>):Promise<MLean | null>
+    findOne(filter:MongoSteelFilter<MLean>):Promise<MLean | null>
     /**
      * Find the first document that has all the properties in the filter argument and delete it.
      */
-    findOneAndDelete(filter:Partial<MLean>):Promise<MLean>
+    findOneAndDelete(filter:MongoSteelFilter<MLean>):Promise<MLean>
     /**
      * Find the first document that matches all the propeties in the filter argument, and replace it the a document in the replacement
      */
-    findOneAndReplace(filter:Partial<MLean>, replacement:MLean):Promise<MLean>
+    findOneAndReplace(filter:MongoSteelFilter<MLean>, replacement:MLean):Promise<MLean>
     /**
      * Find the first document that matches all the properties in the filter argument, and do what is essentially Object.assign() on it with the update argument
      */
-    findOneAndUpdate(filter:Partial<MLean>, update:Partial<MLean>):Promise<MLean>
+    findOneAndUpdate(filter:MongoSteelFilter<MLean>, update:Partial<MLean>):Promise<MLean>
     /**
      * Delete all matching documents to the filter argument
      */
-    deleteMany(filter:Partial<MLean>):Promise<void>
+    deleteMany(filter:MongoSteelFilter<MLean>):Promise<void>
 }
 
 /**

@@ -11,8 +11,7 @@
     "strictNullChecks": true,
     "removeComments": false,
     "declaration": true,
-    "declarationMap": true,
-    "lib": ["es2017", "es7", "es6", ],
+    "lib": ["es2017", "es7", "es6", ]
   },
   "include": [
       "lib/**/*.ts",

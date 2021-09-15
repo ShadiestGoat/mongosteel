@@ -1,5 +1,8 @@
-import { OptionalId } from "mongodb";
+import { Condition, OptionalId } from "mongodb";
 import { Schema } from "./schema";
+export declare type MongoSteelFilter<T> = {
+    [K in keyof T]: Condition<T[K]>;
+};
 /**
  * A function to wait for you to connect :D
  */
@@ -21,12 +24,12 @@ declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> 
      * @returns
      */
     save(): Promise<OptionalId<Lean>>;
-    static find(filter: Partial<unknown>): Promise<unknown[]>;
-    static findOne(filter: Partial<unknown>): Promise<unknown | null>;
-    static findOneAndDelete(filter: Partial<unknown>): Promise<unknown>;
-    static findOneAndReplace(filter: Partial<unknown>, replacement: Record<string, never>): Promise<unknown>;
-    static findOneAndUpdate(filter: Partial<unknown>, update: Partial<unknown>): Promise<unknown>;
-    static deleteMany(filter: Partial<unknown>): Promise<void>;
+    static find(filter: MongoSteelFilter<unknown>): Promise<unknown[]>;
+    static findOne(filter: MongoSteelFilter<unknown>): Promise<unknown | null>;
+    static findOneAndDelete(filter: MongoSteelFilter<unknown>): Promise<unknown>;
+    static findOneAndReplace(filter: MongoSteelFilter<unknown>, replacement: Record<string, unknown>): Promise<unknown>;
+    static findOneAndUpdate(filter: MongoSteelFilter<unknown>, update: Partial<unknown>): Promise<unknown>;
+    static deleteMany(filter: MongoSteelFilter<unknown>): Promise<void>;
 }
 /**
  * The Model class. This should not be called directly, check model() for getting this class.  This should only be used for types
@@ -38,27 +41,27 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
     /**
      * Find multiple documents in your collection using properties of your document
      */
-    find(filter: Partial<MLean>): Promise<MLean[]>;
+    find(filter: MongoSteelFilter<MLean>): Promise<MLean[]>;
     /**
      * Find the first document that has all the properties in the filter argument
      */
-    findOne(filter: Partial<MLean>): Promise<MLean | null>;
+    findOne(filter: MongoSteelFilter<MLean>): Promise<MLean | null>;
     /**
      * Find the first document that has all the properties in the filter argument and delete it.
      */
-    findOneAndDelete(filter: Partial<MLean>): Promise<MLean>;
+    findOneAndDelete(filter: MongoSteelFilter<MLean>): Promise<MLean>;
     /**
      * Find the first document that matches all the propeties in the filter argument, and replace it the a document in the replacement
      */
-    findOneAndReplace(filter: Partial<MLean>, replacement: MLean): Promise<MLean>;
+    findOneAndReplace(filter: MongoSteelFilter<MLean>, replacement: MLean): Promise<MLean>;
     /**
      * Find the first document that matches all the properties in the filter argument, and do what is essentially Object.assign() on it with the update argument
      */
-    findOneAndUpdate(filter: Partial<MLean>, update: Partial<MLean>): Promise<MLean>;
+    findOneAndUpdate(filter: MongoSteelFilter<MLean>, update: Partial<MLean>): Promise<MLean>;
     /**
      * Delete all matching documents to the filter argument
      */
-    deleteMany(filter: Partial<MLean>): Promise<void>;
+    deleteMany(filter: MongoSteelFilter<MLean>): Promise<void>;
 }
 /**
  * A function to return a Model CLASS. Not instance.
@@ -68,4 +71,3 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
  */
 export declare function model<Lean, Methods extends genericFunctions<Lean, Methods> = Record<string, never>>(collection: string, schema: Schema<OptionalId<Lean>>, methods: Methods): Model<Lean, Methods>;
 export {};
-//# sourceMappingURL=model.d.ts.map

@@ -69,4 +69,3 @@ export declare class MongoSteel {
     static disconnect(): Promise<void>;
 }
 export {};
-//# sourceMappingURL=connection.d.ts.map

@@ -87,4 +87,3 @@ export declare class Schema<SHLean = unknown> {
     validate(doc: unknown, opts?: SchemaValidationOpts): validTot<SHLean>;
 }
 export default Schema;
-//# sourceMappingURL=schema.d.ts.map

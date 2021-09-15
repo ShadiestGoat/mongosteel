@@ -2881,7 +2881,9 @@ img {
 <span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">kittyModel</span><span style="color: #000000">.</span><span style="color: #795E26">find</span><span style="color: #000000">({</span><span style="color: #001080">name:</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;Nora&quot;</span><span style="color: #000000">}) </span><span style="color: #008000">// [{name: &quot;Nora&quot;, type: {breed: &quot;none&quot;, furColor: [&quot;brown&quot;, &quot;grey&quot;, &quot;dark brown&quot;]}}]</span>
 </code></pre>
 			<p>Great ^^</p>
-			<p>Unfortunately, as of current update (1.1.X), the actual query syntax from mongodb are not fully supported yet. </p>
+			<p>Unfortunately, as of current update (1.2.X), the actual query syntax from mongodb isn&#39;t 100% supported yet. But, you can use for example regex:</p>
+			<pre><code class="language-ts"><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">kitteModel</span><span style="color: #000000">.</span><span style="color: #795E26">find</span><span style="color: #000000">({</span><span style="color: #001080">name:</span><span style="color: #811F3F"> /id-\d</span><span style="color: #000000">+</span><span style="color: #811F3F">/</span><span style="color: #000000">})</span>
+</code></pre>
 			<p>You can also add methods to your model through schema:</p>
 			<pre><code class="language-ts"><span style="color: #008000">// same type &amp; schema setup</span>
 
