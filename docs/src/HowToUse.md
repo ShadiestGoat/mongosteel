@@ -21,7 +21,7 @@ Now note here that this is a type alias, not an interface. Interfaces only half 
 We want this type in a collection, so first off, lets connect to a database!
 
 ```ts
-import { MongoSteel } from "mongosteel"
+import { MongoSteel } from "mongosteel" //note that you can also use require() for this, but I like esm :)
 
 async function main() {
     // either use the following:

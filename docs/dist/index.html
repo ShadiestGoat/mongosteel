@@ -2749,9 +2749,6 @@ img {
 		<li class=" tsd-kind-function">
 			<a href="modules.html#toUrl" class="tsd-kind-icon">to<wbr>Url</a>
 		</li>
-		<li class=" tsd-kind-function">
-			<a href="modules.html#waitForConnection" class="tsd-kind-icon">wait<wbr>For<wbr>Connection</a>
-		</li>
 	</ul>
 </nav>
 <div class="container container-main">
@@ -2776,7 +2773,7 @@ img {
 </code></pre>
 			<p>Now note here that this is a type alias, not an interface. Interfaces only half work as of current patch, so please use type aliases!</p>
 			<p>We want this type in a collection, so first off, lets connect to a database!</p>
-			<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MongoSteel</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;mongosteel&quot;</span>
+			<pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">MongoSteel</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;mongosteel&quot;</span><span style="color: #000000"> </span><span style="color: #008000">//note that you can also use require() for this, but I like esm :)</span>
 
 <span style="color: #0000FF">async</span><span style="color: #000000"> </span><span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">main</span><span style="color: #000000">() {</span>
 <span style="color: #000000">    </span><span style="color: #008000">// either use the following:</span>
@@ -2947,7 +2944,6 @@ img {
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#model" class="tsd-kind-icon">model</a></li>
 							<li class="tsd-kind-function"><a href="modules.html#toUrl" class="tsd-kind-icon">to<wbr>Url</a></li>
-							<li class="tsd-kind-function"><a href="modules.html#waitForConnection" class="tsd-kind-icon">wait<wbr>For<wbr>Connection</a></li>
 						</ul>
 					</section>
 				</div>
@@ -3292,25 +3288,6 @@ img {
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel tsd-member tsd-kind-function">
-				<a name="waitForConnection" class="tsd-anchor"></a>
-				<h3>wait<wbr>For<wbr>Connection</h3>
-				<ul class="tsd-signatures tsd-kind-function">
-					<li class="tsd-signature tsd-kind-icon">wait<wbr>For<wbr>Connection<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-				</ul>
-				<ul class="tsd-descriptions">
-					<li class="tsd-description">
-						<aside class="tsd-sources">
-						</aside>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>A function to wait for you to connect :D</p>
-							</div>
-						</div>
-						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
 				</ul>
 			</section>

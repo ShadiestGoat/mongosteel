@@ -1,39 +1,24 @@
 {
   "name": "mongosteel",
-  "version": "1.2.0",
+  "version": "1.3.2",
   "description": "A solid ODM for MongoDB",
-  "main": "dist/index",
-  "typings": "dist/index",
-  "eslintConfig": {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "rules": {
-      "@typescript-eslint/explicit-function-return-type": "warn",
-      "@typescript-eslint/explicit-module-boundary-types": "warn",
-      "@typescript-eslint/consistent-type-assertions": "warn",
-      "@typescript-eslint/ban-tslint-comment": "error"
-    },
-    "ignorePatterns": [
-      "dist/",
-      "build/"
-    ]
-  },
+  "main": "dist/cjs/index",
+  "module": "dist/esm/index.js",
+  "typings": "dist/types/index",
   "author": "Shady Goat <shady@shadygoat.eu> (https://shadygoat.eu/)",
   "license": "MIT",
   "files": [
-    "dist/index.js",
-    "dist/index.d.ts",
-    "dist/lib"
+    "dist/cjs",
+    "dist/esm"
   ],
   "scripts": {
     "lint": "eslint 'lib/**/*.ts'",
-    "build": "tsc",
+    "build:cjs": "tsc -m commonjs --outDir dist/cjs",
+    "build:esm": "tsc",
     "clean": "rm -rf dist docs/dist",
     "build:docs": "typedoc",
     "minify": "node minify.js",
-    "build:full": "npm run clean && npm run build && npm run build:docs && npm run minify",
+    "build:full": "npm run clean && npm run build:cjs && npm run build:esm && npm run build:docs && npm run minify",
     "prepublishOnly": "npm run build:full"
   },
   "repository": {

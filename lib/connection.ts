@@ -2,12 +2,10 @@ import { Db, DbOptions, MongoClient, MongoClientOptions } from "mongodb"
 import { Model } from "./model"
 
 export type ConnectionOptions = {
-
     /**
      * The name of your database
      */
     dbName: string,
-
     /**
      * The username of the user
      */

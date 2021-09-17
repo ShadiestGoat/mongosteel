@@ -11,7 +11,6 @@ import {
 import {
     model,
     Model,
-    waitForConnection,
     genericFunctions
 } from "./lib/model"
 import {
@@ -36,6 +35,5 @@ export {
     mongoSteelOpts,
     invalid,
     validTot,
-    waitForConnection,
     genericFunctions
 }

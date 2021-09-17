@@ -1,6 +1,6 @@
 # MongoSteel
 
-MongoSteel is a *solid* [MongoDB](https://www.mongodb.org/) object modeling tool, designed to work in a typescript asynchronous environment. MongoSteel does not support callbacks.
+MongoSteel is a *solid* [MongoDB](https://www.mongodb.org/) object modeling tool, designed to work in a typescript asynchronous environment. MongoSteel does not support callbacks. MongoSteel now supports ESM imports!
 
 [![npm](https://nodei.co/npm/mongosteel.png)](https://www.npmjs.com/package/mongosteel)
 
@@ -19,9 +19,9 @@ You can get support on [github's discussions](https://github.com/ShadiestGoat/mo
 
 ## Limitations
 
-1. A schema cannot have a property named 'type' and 'required' as those are currently used to identify schema options
+1. A schema cannot have a property named 'type' and 'required' (both at once, ie. {type: "string"} is ok, but {type: "string", required: "boolean"} isn't) as those are currently used to identify schema options
 2. No plugins (though there are methods, which aren't fully tested and be slightly broken)
-3. Not all methods are implemented (due to some being superior, case and point: `findOneAndDelete` > `deleteOne`), but again the collection property is exposed, you can still call those methods from the mongodb driver
+3. Not all methods are implemented (due to some being superior, case and point: `findOneAndDelete` > `deleteOne`), and lack of a need)
 
 ## Contributions
 

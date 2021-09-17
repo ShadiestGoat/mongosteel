@@ -1,23 +1,19 @@
-import { Condition, OptionalId } from "mongodb";
+import { Collection, Condition, OptionalId } from "mongodb";
 import { Schema } from "./schema";
 export declare type MongoSteelFilter<T> = {
-    [K in keyof T]: Condition<T[K]>;
+    [K in keyof T]?: Condition<T[K]>;
 };
-/**
- * A function to wait for you to connect :D
- */
-export declare function waitForConnection(): void;
 export declare type genericFunctions<Lean, Methods extends genericFunctions<Lean, Methods>> = Record<string, ((this: Model<Lean, Methods>, ...args: unknown[]) => unknown)>;
 declare class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record<string, never>, SH extends Schema<OptionalId<Lean>> = Schema<OptionalId<Lean>>> {
     static schema: Schema<unknown>;
     schema: SH;
     doc: OptionalId<Lean>;
-    static colName: string;
-    colName: string;
     saved: boolean;
     static methods: unknown;
     methods: MMethods;
     private oldId;
+    static collection: Collection;
+    collection: Collection<Lean>;
     constructor(collection: string, schema: SH, doc: Partial<OptionalId<Lean>>, methods: MMethods);
     /**
      * Saves the current document into the database

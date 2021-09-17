@@ -3,20 +3,7 @@ import { mongoSteelConnection } from "./connection";
 import { MongoSteelValidityError, Schema } from "./schema";
 
 export type MongoSteelFilter<T> = {
-    [K in keyof T]: Condition<T[K]>
-}
-
-/**
- * A function to wait for you to connect :D
- */
-export function waitForConnection():void {
-    const badTime = Date.now() + 30 * 1000;
-    while (!mongoSteelConnection.on) if (Date.now() > badTime) throw new Error("There is no connection!")
-}
-
-function getCollection<L>(name:string):Collection<L> {
-    if (!mongoSteelConnection.on) throw new Error("Please don't manually set this variable!")
-    return mongoSteelConnection.db.collection(name)
+    [K in keyof T]?: Condition<T[K]>
 }
 
 export type genericFunctions<Lean, Methods extends genericFunctions<Lean, Methods>> = Record<string, ((this:Model<Lean, Methods>, ...args: unknown[]) => unknown)>
@@ -25,14 +12,14 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     static schema:Schema<unknown>
     schema:SH
     doc:OptionalId<Lean>
-    static colName:string
-    colName:string
     saved:boolean
     static methods:unknown
     methods:MMethods
     private oldId:string
+    static collection:Collection
+    collection:Collection<Lean>
+
     constructor(collection:string, schema:SH, doc:Partial<OptionalId<Lean>>, methods:MMethods) {
-        this.colName = collection
         const validate = schema.validate(doc)
         if (!validate.valid && !mongoSteelConnection.opts.noVerification) throw new MongoSteelValidityError(validate)
         this.doc = validate.valid ? validate.res : doc as OptionalId<Lean>
@@ -40,21 +27,26 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         this.saved = false
         this.oldId = ""
         this.methods = methods
+        const _flagCheck = setInterval(function() {
+            if (mongoSteelConnection.on) {
+                clearInterval(_flagCheck);
+                this.collection = mongoSteelConnection.db.collection(collection)
+            }
+        }, 100);
     }
     /**
      * Saves the current document into the database
      * @returns
      */
     async save():Promise<OptionalId<Lean>> {
-        const col = getCollection<Lean>(this.colName)
         if (!mongoSteelConnection.opts.noIdDetection && this.saved && (this.oldId == this.doc._id)) {
             console.warn(`The _id ${this.doc._id} has already been saved once, overriding it with a new id...\nTo avoid this, use mongoSteel option { noIdDetection:true }`)
             delete this.doc._id
         }
-        const res = await col.insertOne(this.doc)
+        const res = await this.collection.insertOne(this.doc)
         if (!res.insertedId) throw Error('Not inserted')
         if (!mongoSteelConnection.opts.noDocsUpdate) {
-            const newDoc = await col.findOne({_id: res.insertedId} as unknown as Lean)
+            const newDoc = await this.collection.findOne({_id: res.insertedId} as unknown as Lean)
             if (!newDoc) throw Error('Weird')
             this.doc = newDoc as OptionalId<Lean>
         }
@@ -64,18 +56,15 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     }
 
     static async find(filter:MongoSteelFilter<unknown>):Promise<unknown[]> {
-        const col = getCollection<unknown>(this.colName)
-        return await col.find(filter).toArray()
+        return await this.collection.find(filter).toArray()
     }
 
     static async findOne(filter:MongoSteelFilter<unknown>):Promise<unknown | null> {
-        const col = getCollection<unknown>(this.colName)
-        return await col.findOne(filter)
+        return await this.collection.findOne(filter)
     }
 
     static async findOneAndDelete(filter:MongoSteelFilter<unknown>):Promise<unknown> {
-        const col = getCollection<unknown>(this.colName)
-        const res = await col.findOneAndDelete(filter)
+        const res = await this.collection.findOneAndDelete(filter)
         if (!res.ok) throw new Error('findOneAndDelete returned not OK')
         return res.value
     }
@@ -84,8 +73,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         const valid = this.schema.validate(replacement)
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         replacement = valid.res as Record<string, never>
-        const col = getCollection<unknown>(this.colName)
-        const res = await col.findOneAndReplace(filter, replacement)
+        const res = await this.collection.findOneAndReplace(filter, replacement)
         if (!res.ok) throw new Error('findOneAndReplace returned not OK')
         return res.value
     }
@@ -94,8 +82,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
         const valid = this.schema.validate(update, {ignoreDefault: true, ignoreRequired: true})
         if (!valid.valid) throw new MongoSteelValidityError(valid)
         // no need to update the update since there should be no mutations!
-        const col = getCollection<unknown>(this.colName)
-        const res = await col.findOneAndUpdate(filter, {
+        const res = await this.collection.findOneAndUpdate(filter, {
             $set: update as UpdateFilter<unknown>
         })
         if (!res.ok) throw new Error('findOneAndUpdate returned not OK')
@@ -103,8 +90,7 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
     }
 
     static async deleteMany(filter:MongoSteelFilter<unknown>):Promise<void> {
-        const col = getCollection<unknown>(this.colName)
-        await col.deleteMany(filter)
+        await this.collection.deleteMany(filter)
     }
 }
 
@@ -148,12 +134,20 @@ export interface Model<MLean, MMethods extends genericFunctions<MLean, MMethods>
  * @returns the model class.
  */
 export function model<Lean, Methods extends genericFunctions<Lean, Methods> = Record<string, never>>(collection:string, schema:Schema<OptionalId<Lean>>, methods:Methods):Model<Lean, Methods> {
+
     class MModel extends trueModel<Lean, Methods> {
         constructor(doc:Partial<OptionalId<Lean>> = {}) {
             super(collection, schema, doc, methods)
         }
     }
-    MModel.colName = collection
+
+    const _flagCheck = setInterval(function() {
+        if (mongoSteelConnection.on) {
+            clearInterval(_flagCheck);
+            MModel.collection = mongoSteelConnection.db.collection(collection)
+        }
+    }, 100);
+
     MModel.schema = schema as Schema
     MModel.methods = methods
     return (MModel as unknown) as Model<Lean, Methods>

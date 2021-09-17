@@ -2,3 +2,9 @@ lib/
 docs/
 index.ts
 .github
+minify.js
+.eslintrc.js
+.editorconfig
+.gitignore
+typedoc.json
+

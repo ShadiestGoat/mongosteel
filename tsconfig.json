@@ -5,13 +5,15 @@
     "esModuleInterop": true,
     "target": "ES6",
     "resolveJsonModule": true,
-    "outDir": "./dist",
+    "outDir": "./dist/esm/",
+    "declarationDir": "./dist/types",
     "checkJs": true,
-    "module": "CommonJS",
+    "module": "ESNext",
     "strictNullChecks": true,
     "removeComments": false,
     "declaration": true,
-    "lib": ["es2017", "es7", "es6", ]
+    "skipLibCheck": true,
+    "lib": ["es2017", "es7", "es6"]
   },
   "include": [
       "lib/**/*.ts",
