@@ -42,13 +42,7 @@ let index = included
 .join("\n"))
 .reduce((a, b) => a + "\n" + b, "").replace(/export default .+/g, "")
 
-index = `${Object.keys(imports).map(module => `import {${imports[module].join(',')}} from "${module}";`).join('')}${index
-    .replace(/\n/g, "")
-    .replace(/: /g, ":")
-    .replace(/\* /g, "*")
-    .replace(/ \*\//g, "*/")
-    .replace(/(\}|\)) & (\{|\()/g, "&")
-}`
+index = `${Object.keys(imports).map(module => `import {${imports[module].join(',')}} from "${module}";`).join('')}${index}`
 
 if (!exists('dist')) mkdirSync('dist')
 if (!exists('dist/types')) mkdirSync('dist/types')
