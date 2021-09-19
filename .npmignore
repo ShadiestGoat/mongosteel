@@ -7,4 +7,6 @@ minify.js
 .editorconfig
 .gitignore
 typedoc.json
+scripts/
+bundlesize.config.json
 

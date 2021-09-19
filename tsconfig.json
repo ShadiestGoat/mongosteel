@@ -6,7 +6,7 @@
     "target": "ES6",
     "resolveJsonModule": true,
     "outDir": "./dist/esm/",
-    "declarationDir": "./dist/types",
+    "declarationDir": "./tmpTypes",
     "checkJs": true,
     "module": "ESNext",
     "strictNullChecks": true,

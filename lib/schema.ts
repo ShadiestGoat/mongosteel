@@ -1,6 +1,4 @@
-/**
- * Convert a type to a string of that type. Nested shemas convert to SchemaDefinition
- */
+/** Convert a type to a string of that type. Nested shemas convert to SchemaDefinition */
 export type TypeToString<T, R extends boolean = false> = (T extends string ? 'string' :
                                        T extends number ? 'number' :
                                        T extends boolean ? "boolean" :
@@ -9,61 +7,41 @@ export type TypeToString<T, R extends boolean = false> = (T extends string ? 'st
                                        T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
                                        "mixed") | "mixed"
 
-/**
- * Options for your type
- */
+/** Options for your type */
 export type SchemaTypeOptions<T> = {
     type:TypeToString<T, false>
-    /**
-     * Weather or not the property is required
-     */
+    /** Weather or not the property is required */
     required: boolean,
-    /**
-     * The default value of the property. If required is present, this will be ignored
-     */
+    /** The default value of the property. If required is present, this will be ignored */
     default?:T | (() => T),
-    /**
-     * If the option is of string type, this can be used to validate the string
-     */
+    /** If the option is of string type, this can be used to validate the string */
     pattern?:T extends string ? RegExp | undefined : undefined
 }
 
-/**
- * Used to create a definition for the Schema constructor
- */
+/** Used to create a definition for the Schema constructor */
 export type SchemaDefinition<T> = {
     [K in keyof T]: SchemaTypeOptions<T[K]> | TypeToString<T[K], true>
 }
 
-/**
- * Same as SchemaDefinition except this one forces you to use SchemaTypeOptions
- */
+/** Same as SchemaDefinition except this one forces you to use SchemaTypeOptions */
 export type SchemaFull<T> = {
     [K in keyof T]: SchemaTypeOptions<T[K]>
 }
 
-/**
- * a valid response to a validation schema
- */
+/** a valid response to a validation schema */
 export type valid<obj> = {
     valid: true,
     res:obj
 }
 
-/**
- * an invalid response to a validation schema
- */
+/** an invalid response to a validation schema */
 export type invalid = {
     valid: false,
-    /**
-     * the key which has the issue. Undefined if the reason is majorBadType, since the whole document type is invalid
-     */
+    /** the key which has the issue. Undefined if the reason is majorBadType, since the whole document type is invalid */
     badKey: string,
-    /**
-     * badType - the key above has bad type,
+    /** badType - the key above has bad type,
      * required - the key above is required but missing
-     * majorBadType - the whole document is not a correct type! It's not an object or is an array.
-     */
+     * majorBadType - the whole document is not a correct type! It's not an object or is an array. */
     reason: "badType" | "required"
 } | {
     valid: false,
@@ -73,19 +51,13 @@ export type invalid = {
 export type validTot<obj> = valid<obj> | invalid
 
 export type SchemaValidationOpts = {
-    /**
-     * Ignore weather something is required or not
-     */
+    /** Ignore weather something is required or not */
     ignoreRequired?:boolean,
-    /**
-     * Don't apply defaults
-     */
+    /** Don't apply defaults */
     ignoreDefault?:boolean
 }
 
-/**
- * if a schema validation fails on a Model class level
- */
+/** if a schema validation fails on a Model class level */
 export class MongoSteelValidityError extends Error {
     obj:invalid
     constructor(validRes:invalid) {
@@ -142,11 +114,9 @@ export class Schema<SHLean = unknown> {
         }
         this.schema = inc(schema) as SchemaFull<SHLean>
     }
-    /**
-     * validate an object to make sure the document provided is a valid one. This also adds the default values
+    /** validate an object to make sure the document provided is a valid one. This also adds the default values
      *
-     * Note: this does not throw MongoSteelValidityError!
-     */
+     * Note: this does not throw MongoSteelValidityError! */
     validate(doc:unknown, opts:SchemaValidationOpts = {}):validTot<SHLean> {
         if (typeof doc != "object" || Array.isArray(doc)) return {
             valid: false,

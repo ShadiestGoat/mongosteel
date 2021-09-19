@@ -2,33 +2,21 @@ import { Db, DbOptions, MongoClient, MongoClientOptions } from "mongodb"
 import { Model } from "./model"
 
 export type ConnectionOptions = {
-    /**
-     * The name of your database
-     */
+    /** The name of your database */
     dbName: string,
-    /**
-     * The username of the user
-     */
+    /** The username of the user */
     user: string,
 
-    /**
-     * The password of the user
-     */
+    /** The password of the user */
     password: string,
 
-    /**
-     * The location of the database (eg. `ip:port`)
-     */
+    /*** The location of the database (eg. `ip:port`) */
     location:string,
-    /**
-     * database options
-     */
+    /** database options */
     dbOpts?:DbOptions
 }
 
-/**
- * Create a connection url
- */
+/** Create a connection url */
 export function toUrl(opts:ConnectionOptions):string {
     ([
         'dbName',
@@ -58,9 +46,7 @@ type Connection = ({
     opts:mongoSteelOpts
 }
 
-/**
- * A 'global-ish' connection state that mongoSteel uses. Do not manuall change this, check MongoSteel.connect() and MongoSteel.disconnect()
- */
+/** A 'global-ish' connection state that mongoSteel uses. Do not manuall change this, check MongoSteel.connect() and MongoSteel.disconnect() */
 export let mongoSteelConnection:Readonly<Connection> = {
     on: false,
     models: {},
@@ -68,24 +54,16 @@ export let mongoSteelConnection:Readonly<Connection> = {
 }
 
 export type mongoSteelOpts = {
-    /**
-     * Do not detect double-saving documents with the same _id
-     */
+    /** Do not detect double-saving documents with the same _id */
     noIdDetection?:boolean,
-    /**
-     * Do not verify documents, default false.
-     */
+    /** Do not verify documents, default false. */
     noVerification?:boolean,
-    /**
-     * Don't update the document whenever you save one. This is used to update types like Buffer & Binaries
-     */
+    /** Don't update the document whenever you save one. This is used to update types like Buffer & Binaries */
     noDocsUpdate?:boolean
 }
 
 export class MongoSteel {
-    /**
-     * Connect to a database. This is a static method, so you can do MongoSteel.connect(), without having to create an instance of the class
-     */
+    /** Connect to a database. This is a static method, so you can do MongoSteel.connect(), without having to create an instance of the class */
     static async connect(connection?:string | ConnectionOptions, opts?:MongoClientOptions, mongoSteelSettings?:mongoSteelOpts):Promise<Db> {
         if (mongoSteelConnection.on) {
             if (connection) {
@@ -109,9 +87,7 @@ export class MongoSteel {
         return db
     }
 
-    /**
-     * Disconnect from a database. This is a static method, so you can do MongoSteel.disconnect(), without having to create an instance of the class
-     */
+    /** Disconnect from a database. This is a static method, so you can do MongoSteel.disconnect(), without having to create an instance of the class */
     static async disconnect():Promise<void> {
         if (mongoSteelConnection) {
             await mongoSteelConnection.client?.close()
