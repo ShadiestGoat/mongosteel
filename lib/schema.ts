@@ -155,7 +155,6 @@ export class Schema<SHLean = unknown> {
                 case "mixed":
                     return false
                 default:
-                    console.warn(`Unknown type for ${key}! The schema says ${opts.type}`)
                     return false
             }
         }
@@ -166,7 +165,7 @@ export class Schema<SHLean = unknown> {
                 if (val) return val
             } else {
                 for (const v in s1) {
-                    if ((typeof s2 == "object" && !Array.isArray(s2)) && !Object.keys(s2).includes(v)) {
+                    if (typeof s2 == "object" && !Array.isArray(s2) && !Object.keys(s2).includes(v)) {
                         if (s1[v].required && !opts.ignoreRequired) return {
                             valid: false,
                             reason: 'required',
@@ -176,10 +175,9 @@ export class Schema<SHLean = unknown> {
                             if (typeof s1[v].default == "function") (doc as Record<string, unknown>)[v] = s1[v].default()
                             else (doc as Record<string, unknown>)[v] = s1[v].default
                         }
-                        continue
                     } else if (Array.isArray(s1[v].type)) {
                         if ((s1[v].type as unknown[]).length == 2) {
-                            if (typeof s2[v] != "object" || Array.isArray(s2[v])) return {
+                            if (Array.isArray(s2[v])) return {
                                 valid: false,
                                 reason: "badType",
                                 badKey: v
