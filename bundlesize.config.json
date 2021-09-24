@@ -2,11 +2,11 @@
     "files": [
       {
         "path": "./dist/cjs/index.js",
-        "maxSize": "2.5 kB"
+        "maxSize": "2.1 kB"
       },
       {
         "path": "./dist/esm/index.js",
-        "maxSize": "2 kB"
+        "maxSize": "1.78 kB"
       }
     ]
 }
