@@ -38,8 +38,9 @@ class trueModel<Lean, MMethods extends genericFunctions<Lean, MMethods> = Record
      * @returns */
     async save():Promise<OptionalId<Lean>> {
         if (!mongoSteelConnection.opts.noIdDetection && this.saved && (this.oldId == this.doc._id)) {
-            console.warn(`The _id ${this.doc._id} has already been saved once, overriding it with a new id...\nTo avoid this, use mongoSteel option { noIdDetection:true }`)
-            delete this.doc._id
+            const {_id, ...nDoc} = this.doc
+            this.doc = nDoc as OptionalId<Lean>
+            console.warn(`The _id ${_id} has already been saved once, overriding it with a new id!`)
         }
         const res = await this.collection.insertOne(this.doc)
         if (!res.insertedId) throw Error('Not inserted')
