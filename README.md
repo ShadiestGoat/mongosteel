@@ -1,7 +1,7 @@
 # MongoSteel
 
 <p align="center">
-    <img src="./icon.svg" width="30%" align="center">
+    <img src="./icon.svg" width="30%">
 </p>
 
 MongoSteel is a *solid* [MongoDB](https://www.mongodb.org/) object modeling tool, designed to work in a typescript asynchronous environment. MongoSteel does not support callbacks. MongoSteel now supports ESM imports!
