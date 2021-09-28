@@ -1,11 +1,15 @@
 # MongoSteel
 
+<p align="center">
+    <img src="./icon.svg" width="30%" align="center">
+</p>
+
 MongoSteel is a *solid* [MongoDB](https://www.mongodb.org/) object modeling tool, designed to work in a typescript asynchronous environment. MongoSteel does not support callbacks. MongoSteel now supports ESM imports!
 
 [![npm](https://nodei.co/npm/mongosteel.png)](https://www.npmjs.com/package/mongosteel)
 
 ## Why was this made?
-Honestly, I just got frustrated with [mongoose](https://github.com/Automattic/mongoose) due to [this issue](https://github.com/Automattic/mongoose/issues/10349), along with how it mixed everything together. Other options such as [mongolass](https://github.com/mongolass/mongolass) had cool plugin APIs and nice systems, but they didn't work with me very well due to their absence of typescript support. 
+Honestly, I just got frustrated with [mongoose](https://github.com/Automattic/mongoose) due to [this issue](https://github.com/Automattic/mongoose/issues/10349) (though as of now it appears to be a lot better), along with how it mixed everything together. Other options such as [mongolass](https://github.com/mongolass/mongolass) had cool plugin APIs and nice systems, but they didn't work with me very well due to their absence of typescript support. 
 
 So, I decided to throw my own hat into the ring, and made this. As of now, it doesn't have much plugin support, but it has a nice strict way of doing things, and is a very small module, with no dependencies, besides the mongoDB driver.
 
