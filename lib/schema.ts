@@ -72,7 +72,7 @@ export class Schema<SHLean = unknown> {
     constructor(schema:SchemaDefinition<SHLean>) {
         function parser(val:unknown):unknown {
             if (typeof val == "string") {
-                if (!val) val = "string" //use string as default!
+                val ||= "string" //use string as default!
                 return {
                     type: val,
                     required: true

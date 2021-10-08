@@ -12,7 +12,7 @@ const shared = {
     sourcemap: false,
     target: "esnext",
     tsconfig: "./tsconfig.json",
-    external: Object.keys(dependencies).concat(Object.keys(devDependencies)),
+    external: Object.keys({...dependencies, ...devDependencies}),
 }
 
 build({
