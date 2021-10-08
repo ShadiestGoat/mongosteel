@@ -28,7 +28,7 @@ export function toUrl(opts:ConnectionOptions):string {
     })
     opts.dbOpts ||= {}
 
-    return encodeURI(`mongodb://${opts.user}:${opts.password}@${opts.location}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${`${v}=${(opts.dbOpts ?? {})[v]}`}`).join('')}`)
+    return encodeURI(`mongodb://${opts.user}:${opts.password}@${opts.location}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${`${v}=${(opts.dbOpts as DbOptions)[v]}`}`).join('')}`)
 }
 
 type Connection = ({
