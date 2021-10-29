@@ -72,7 +72,9 @@ export class MongoSteel {
         }
         if (!connection) throw new Error(`I have nothing to connect to!`)
         const url = typeof connection == "string" ? encodeURI(connection) : toUrl(connection)
-        const client = await MongoClient.connect(url, (Object.assign({useNewUrlParser:true, useUnifiedTopology: true}, opts) as MongoClientOptions))
+
+        const client = (await MongoClient.connect(url, (Object.assign({useNewUrlParser:true, useUnifiedTopology: true}, opts) as MongoClientOptions)))
+
         const db = client.db()
         const SteelOpts:mongoSteelOpts = Object.assign({}, mongoSteelSettings)
         mongoSteelConnection = {
@@ -83,6 +85,7 @@ export class MongoSteel {
             opts:SteelOpts,
             models: mongoSteelConnection.models
         }
+
         return db
     }
 

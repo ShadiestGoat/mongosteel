@@ -56,8 +56,8 @@ saved: boolean;
 static methods: unknown;
 methods: MMethods;
 private oldId;
-static collection: Collection;
-collection: Collection<Lean>;
+static collection: Promise<Collection>;
+collection: Promise<Collection<Lean>>;
 constructor(collection: string, schema: SH, doc: Partial<OptionalId<Lean>>, methods: MMethods);
 /** Saves the current document into the database
 * @returns */
