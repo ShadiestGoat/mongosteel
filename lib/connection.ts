@@ -27,7 +27,7 @@ export function toUrl(opts:ConnectionOptions):string {
         if (!Object.keys(opts).includes(prop)) throw Error(`${prop} is required in the options!`)
     })
     opts.dbOpts ||= {}
-    return encodeURI(`mongodb${/\d\d\d\.\d\d\d\.\d\d\.\d\d\d/.test(opts.location) ? "" : "+srv"}://${opts.user}:${opts.password}@${opts.location}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${`${v}=${(opts.dbOpts as DbOptions)[v]}`}`).join('')}`)
+    return encodeURI(`mongodb${/\d+\.\d+\.\d+\.\d+/.test(opts.location) ? "" : "+srv"}://${opts.user}:${opts.password}@${opts.location}/${opts.dbName}${Object.keys(opts.dbOpts).length == 0 ? '' : '?'}${Object.keys(opts.dbOpts).map((v,i) => `${i == 0 ? '' : "&"}${`${v}=${(opts.dbOpts as DbOptions)[v]}`}`).join('')}`)
 }
 
 type Connection = ({
