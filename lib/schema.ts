@@ -1,15 +1,17 @@
+// TODO: Optimise the types, it slows down tsserver, I suspect due to recursion, or due to the high amount of conditional statements. We could remove the conditionals, but that would remove the philosophy idk
+
 /** Convert a type to a string of that type. Nested shemas convert to SchemaDefinition */
-export type TypeToString<T, R extends boolean = false> = (T extends string ? 'string' :
-                                       T extends number ? 'number' :
+export type TypeToString<T> = (T extends string ? "string" :
+                                       T extends number ? "number" :
                                        T extends boolean ? "boolean" :
-                                       T extends Array<infer U> ? [TypeToString<U, false>] :
-                                       Record<string,never> extends T ? ["string", TypeToString<T[keyof T], false>] : //in case of unknown keys like {[key:string]: whatever}
-                                       T extends Record<string, unknown> ?  R extends true ? undefined : SchemaDefinition<T> :
+                                       T extends Array<infer U> ? [TypeToString<U>] :
+                                       Record<string,never> extends T ? ["string", TypeToString<T[keyof T]>] : //in case of unknown keys like {[key:string]: whatever}
+                                       T extends Record<string, unknown> ?  SchemaDefinition<T> :
                                        "mixed") | "mixed"
 
 /** Options for your type */
 export type SchemaTypeOptions<T> = {
-    type:TypeToString<T, false>
+    type:TypeToString<T>
     /** Weather or not the property is required */
     required: boolean,
     /** The default value of the property. If required is present, this will be ignored */
@@ -20,7 +22,7 @@ export type SchemaTypeOptions<T> = {
 
 /** Used to create a definition for the Schema constructor */
 export type SchemaDefinition<T> = {
-    [K in keyof T]: SchemaTypeOptions<T[K]> | TypeToString<T[K], true>
+    [K in keyof T]: SchemaTypeOptions<T[K]> | TypeToString<T[K]>
 }
 
 /** Same as SchemaDefinition except this one forces you to use SchemaTypeOptions */
